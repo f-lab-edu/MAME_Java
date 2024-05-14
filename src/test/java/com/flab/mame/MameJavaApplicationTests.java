@@ -1,4 +1,4 @@
-package com.flab.mame_java;
+package com.flab.mame;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
