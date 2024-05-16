@@ -2,7 +2,6 @@ package com.flab.mame.user;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,11 +27,11 @@ public class UserController {
 		return userService.getUser(id);
 	}
 
-	@PatchMapping("/{id}")
+	/*@PatchMapping("/{id}")
 	public void updateUser(@PathVariable final Long id, @RequestBody UserUpdateReqeust request) {
 		userService.updateUser(id, request);
 	}
-
+*/
 	@DeleteMapping("/{id}")
 	public void deleteUser(@PathVariable final Long id) {
 		userService.deleteUser(id);

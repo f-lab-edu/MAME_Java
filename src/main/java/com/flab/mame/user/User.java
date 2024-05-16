@@ -24,24 +24,15 @@ public class User {
 
 	private String password;
 
-	private String nickname;
 
-	private Integer age;
-
-	private String gender;
-
-	private String bio;
+	/*
+	 *  TODO: 프로필 정보 받아오기
+	 *
+	 * */
 
 
 	/*
 	 * TODO : List for photos
 	 * */
-
-	public void update(UserUpdateReqeust reqeust) {
-		this.nickname = reqeust.getNickname();
-		this.age = reqeust.getAge();
-		this.gender = reqeust.getGender();
-		this.bio = reqeust.getBio();
-	}
 
 }

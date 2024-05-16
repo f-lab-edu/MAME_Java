@@ -20,9 +20,6 @@ public class UserService {
 		User newUser = User.builder()
 			.email(request.getEmail())
 			.password(request.getPassword())
-			.nickname(request.getNickname())
-			.age(request.getAge())
-			.gender(request.getGender())
 			.build();
 
 		userRepository.save(newUser);
@@ -38,15 +35,15 @@ public class UserService {
 		return foundUser;
 	}
 
-	public void updateUser(final Long id, UserUpdateReqeust reqeust) {
-		/*
-		 * TODO: 유저 못찾을 시 예외처리
-		 * */
+	/*public void updateUser(final Long id, UserUpdateReqeust reqeust) {
+	 *//*
+	 * TODO: 유저 못찾을 시 예외처리
+	 * *//*
 		User foundUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("유저 없음"));
 
 		foundUser.update(reqeust);
 
-	}
+	}*/
 
 	public void deleteUser(final Long id) {
 		/*
