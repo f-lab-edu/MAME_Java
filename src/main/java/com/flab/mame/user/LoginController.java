@@ -16,7 +16,7 @@ public class LoginController {
 	private final LoginService loginService;
 
 	@PostMapping("/login")
-	public void login(@RequestBody final UserLoginReqeust reqeust) {
+	public void login(@RequestBody final UserLoginRequest reqeust) {
 		loginService.login(reqeust);
 	}
 

@@ -13,7 +13,7 @@ public class LoginService {
 
 	private final UserRepository userRepository;
 
-	public void login(final UserLoginReqeust reqeust) {
+	public void login(final UserLoginRequest reqeust) {
 		/*
 		 * TODO: 유저 못찾을 경우, 비밀번호 틀릴 경우, 비밀번호 검증
 		 * */
