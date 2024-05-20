@@ -1,15 +1,21 @@
 package com.flab.mame.profile;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
 public class ProfileCreateRequest {
 
-	private String name;
+	@NotBlank
+	private String nickname;
 
+	@NotNull
 	private int age;
 
-	private String gender;
+	@NotBlank
+	private Gender gender;
 
-	private String bio;
+	@NotBlank
+	private String introduction;
 }

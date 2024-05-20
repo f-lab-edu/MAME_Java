@@ -7,23 +7,24 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class ProfileService {
 
 	private final ProfileRepository profileRepository;
 
 	public Profile createProfile(final ProfileCreateRequest request) {
 		Profile newProfile = Profile.builder()
-			.name(request.getName())
+			.nickname(request.getNickname())
 			.age(request.getAge())
 			.gender(request.getGender())
-			.bio(request.getBio())
+			.introduction(request.getIntroduction())
 			.build();
 
 		return profileRepository.save(newProfile);
 
 	}
 
-	public Profile findById(final Long id) {
+	public Profile getProfileById(final Long id) {
 		Profile foundProfile = profileRepository.findById(id).orElseThrow(() -> new RuntimeException("프로필 못찾음"));
 
 		return foundProfile;
@@ -33,7 +34,7 @@ public class ProfileService {
 	public Profile updateProfile(final Long id, final ProfileUpdateRequest request) {
 		Profile foundProfile = profileRepository.findById(id).orElseThrow(() -> new RuntimeException("프로필 못찾음"));
 
-		foundProfile.update(request);
+		foundProfile.updateProfile(request);
 
 		return foundProfile;
 	}

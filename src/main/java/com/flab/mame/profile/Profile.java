@@ -1,9 +1,14 @@
 package com.flab.mame.profile;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,19 +25,25 @@ public class Profile {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String name;
+	@Column(nullable = false, length = 10)
+	@NotBlank
+	private String nickname;
 
+	@NotNull
 	private int age;
 
-	private String gender;
+	@Enumerated(EnumType.STRING)
+	@NotBlank
+	private Gender gender;
 
-	private String bio;
+	@NotBlank
+	private String introduction;
 
-	public void update(final ProfileUpdateRequest request) {
-		this.name = request.getName();
+	public void updateProfile(final ProfileUpdateRequest request) {
+		this.nickname = request.getNickname();
 		this.age = request.getAge();
 		this.gender = request.getGender();
-		this.bio = request.getBio();
+		this.introduction = request.getIntroduction();
 	}
 
 	/*
