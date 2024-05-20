@@ -26,7 +26,7 @@ public class UserService {
 
 	}
 
-	public User getUser(final Long id) {
+	public User getUserById(final Long id) {
 		/*
 		 * TODO: 유저 못찾을 시 예외처리
 		 * */
