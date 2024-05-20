@@ -2,8 +2,6 @@ package com.flab.mame.photo;
 
 import java.io.IOException;
 
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -28,19 +26,15 @@ public class ProfileImageController {
 		return photoService.uploadImage(image);
 	}
 
-	@GetMapping(value = "/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
-	public ResponseEntity<byte[]> viewProfileImage(@PathVariable final Long id) throws IOException {
-		byte[] bytes = photoService.viewProfileImage(id);
-
-		return ResponseEntity
-			.ok()
-			.contentType(MediaType.IMAGE_JPEG)
-			.body(bytes);
+	@GetMapping(value = "/{id}")
+	public ProfileImage viewProfileImage(@PathVariable final Long id) throws IOException {
+		return photoService.viewProfileImage(id);
 	}
 
 	@PatchMapping("/{id}")
-	public void updateProfileImage(@PathVariable final Long id, @RequestParam("image") final MultipartFile image) {
-		photoService.updateProfileImage(id, image);
+	public ProfileImage updateProfileImage(@PathVariable final Long id,
+		@RequestParam("image") final MultipartFile image) {
+		return photoService.updateProfileImage(id, image);
 	}
 
 	@DeleteMapping("/{id}")

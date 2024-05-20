@@ -2,11 +2,9 @@ package com.flab.mame.photo;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +16,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProfileImageService {
 
-	private String filePath = "/Users/dw/images/";
+	@Value("${image.url}")
+	private String IMAGE_BASE_URL;
 
 	private final ProfileImageRepository photoRepository;
 
@@ -26,10 +25,10 @@ public class ProfileImageService {
 
 		String originalFileName = image.getOriginalFilename();
 		String storedFileName = UUID.randomUUID() + "-" + originalFileName;
-		image.transferTo(new File(filePath + storedFileName));
+		image.transferTo(new File(IMAGE_BASE_URL + storedFileName));
 
 		ProfileImage newProfileImage = ProfileImage.builder()
-			.filePath(filePath + storedFileName)
+			.imageURL(IMAGE_BASE_URL + storedFileName)
 			.originalFileName(originalFileName)
 			.storedFileName(storedFileName)
 			.fileSize(image.getSize())
@@ -38,18 +37,19 @@ public class ProfileImageService {
 		return photoRepository.save(newProfileImage);
 	}
 
-	public byte[] viewProfileImage(Long id) throws IOException {
+	public ProfileImage viewProfileImage(Long id) throws IOException {
 		final ProfileImage foundProfileImage = photoRepository.findById(id)
 			.orElseThrow(() -> new RuntimeException("없어"));
 
-		Path filePath = Paths.get(foundProfileImage.getFilePath());
-		return Files.readAllBytes(filePath);
+		return foundProfileImage;
 	}
 
-	public void updateProfileImage(Long id, MultipartFile image) {
+	public ProfileImage updateProfileImage(Long id, MultipartFile image) {
 		ProfileImage foundProfileImage = photoRepository.findById(id).orElseThrow(() -> new RuntimeException("못찾음"));
 
-		foundProfileImage.update(image);
+		foundProfileImage.updateProfileImage(IMAGE_BASE_URL, image);
+
+		return foundProfileImage;
 	}
 
 	public void deleteProfileImage(Long id) {

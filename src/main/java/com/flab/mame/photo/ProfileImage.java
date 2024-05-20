@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,23 +26,28 @@ public class ProfileImage {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String filePath;
+	@NotBlank
+	private String imageURL;
 
+	@NotBlank
 	private String originalFileName;
 
+	@NotBlank
 	private String storedFileName;
 
+	@NotNull
 	private Long fileSize;
 
-	public void update(MultipartFile multipartFile) {
+	public void updateProfileImage(final String IMAGE_BASE_URL, final MultipartFile multipartFile) {
 		this.originalFileName = multipartFile.getOriginalFilename();
 		this.storedFileName = UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
 		this.fileSize = multipartFile.getSize();
-		this.filePath = "/Users/dw/images/" + storedFileName;
+		this.imageURL = IMAGE_BASE_URL + storedFileName;
 	}
 
 	/*
-	 * TODO: 유저랑 연관관계 매핑
+	 * TODO: 유저랑 연관관계 매핑 1:N
+	 *
 	 *
 	 * */
 }
