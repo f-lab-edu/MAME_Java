@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -18,13 +19,13 @@ public class UserController {
 	private final UserService userService;
 
 	@PostMapping("/signup")
-	public void signup(@RequestBody final UserSignupRequest request) {
+	public void signup(@RequestBody @Valid final UserSignupRequest request) {
 		userService.signup(request);
 	}
 
 	@GetMapping("/{id}")
-	public User getUser(@PathVariable final Long id) {
-		return userService.getUser(id);
+	public User getUserById(@PathVariable final Long id) {
+		return userService.getUserById(id);
 	}
 
 	/*@PatchMapping("/{id}")
