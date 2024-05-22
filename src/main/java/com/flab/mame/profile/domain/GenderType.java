@@ -1,6 +1,6 @@
 package com.flab.mame.profile.domain;
 
-public enum Gender {
+public enum GenderType {
 
 	FEMALE, MALE
 }
