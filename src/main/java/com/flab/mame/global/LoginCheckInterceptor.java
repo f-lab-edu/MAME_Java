@@ -23,7 +23,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 		HttpSession session = request.getSession();
 
 		if (session == null || session.getAttribute(UserSessionConst.USER_ID) == null) {
-			throw new RuntimeException("로그인 필요");
+			throw new RestApiException(ErrorCode.LOGIN_REQUIRED);
 		}
 
 		return true;

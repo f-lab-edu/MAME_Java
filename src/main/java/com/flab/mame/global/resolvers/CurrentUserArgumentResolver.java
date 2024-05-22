@@ -1,4 +1,4 @@
-package com.flab.mame.global;
+package com.flab.mame.global.resolvers;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -6,6 +6,9 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import com.flab.mame.global.CurrentUser;
+import com.flab.mame.global.ErrorCode;
+import com.flab.mame.global.RestApiException;
 import com.flab.mame.user.domain.UserSessionConst;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,14 +24,14 @@ public class CurrentUserArgumentResolver implements HandlerMethodArgumentResolve
 	}
 
 	@Override
-	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+	public Long resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
 
 		final HttpServletRequest request = (HttpServletRequest)webRequest.getNativeRequest();
 		final HttpSession session = request.getSession(false);
 
 		if (session == null) {
-			return null;
+			throw new RestApiException(ErrorCode.LOGIN_REQUIRED);
 		}
 
 		Long userId = (Long)session.getAttribute(UserSessionConst.USER_ID);
