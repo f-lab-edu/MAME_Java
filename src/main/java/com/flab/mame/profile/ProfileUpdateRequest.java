@@ -1,5 +1,7 @@
 package com.flab.mame.profile;
 
+import com.flab.mame.profile.domain.GenderType;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -13,8 +15,8 @@ public class ProfileUpdateRequest {
 	@NotNull
 	private int age;
 
-	@NotBlank
-	private Gender gender;
+	@NotNull
+	private GenderType genderType;
 
 	@NotBlank
 	private String introduction;
