@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.flab.mame.user.domain.User;
+import com.flab.mame.profile.domain.Profile;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,8 +43,12 @@ public class ProfileImage {
 	private Long fileSize;
 
 	@ManyToOne
+	@JoinColumn(name = "profile_id")
+	private Profile profile;
+
+/*	@ManyToOne
 	@JoinColumn(name = "user_id")
-	private User user;
+	private User user;*/
 
 	public void updateProfileImage(final String IMAGE_BASE_URL, final MultipartFile multipartFile) {
 		this.originalFileName = multipartFile.getOriginalFilename();
