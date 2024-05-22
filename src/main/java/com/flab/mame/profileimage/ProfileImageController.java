@@ -3,7 +3,6 @@ package com.flab.mame.profileimage;
 import java.io.IOException;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.flab.mame.global.resolvers.CurrentProfile;
 import com.flab.mame.profileimage.domain.ProfileImage;
 
 import lombok.RequiredArgsConstructor;
@@ -24,13 +24,9 @@ public class ProfileImageController {
 	private final ProfileImageService photoService;
 
 	@PostMapping
-	public ProfileImage uploadPhoto(@RequestParam(value = "image") final MultipartFile image) throws IOException {
-		return photoService.uploadImage(image);
-	}
-
-	@GetMapping(value = "/{id}")
-	public ProfileImage viewProfileImage(@PathVariable final Long id) throws IOException {
-		return photoService.viewProfileImage(id);
+	public void addProfileImage(@CurrentProfile final Long profileId,
+		@RequestParam(value = "image") final MultipartFile image) throws IOException {
+		photoService.addProfileImage(profileId, image);
 	}
 
 	@PatchMapping("/{id}")
