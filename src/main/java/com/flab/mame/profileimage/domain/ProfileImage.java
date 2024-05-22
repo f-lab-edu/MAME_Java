@@ -1,13 +1,17 @@
-package com.flab.mame.photo;
+package com.flab.mame.profileimage.domain;
 
 import java.util.UUID;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.flab.mame.user.domain.User;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -38,6 +42,10 @@ public class ProfileImage {
 	@NotNull
 	private Long fileSize;
 
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+
 	public void updateProfileImage(final String IMAGE_BASE_URL, final MultipartFile multipartFile) {
 		this.originalFileName = multipartFile.getOriginalFilename();
 		this.storedFileName = UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
@@ -45,9 +53,4 @@ public class ProfileImage {
 		this.imageURL = IMAGE_BASE_URL + storedFileName;
 	}
 
-	/*
-	 * TODO: 유저랑 연관관계 매핑 1:N
-	 *
-	 *
-	 * */
 }

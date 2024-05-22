@@ -1,4 +1,4 @@
-package com.flab.mame.photo;
+package com.flab.mame.profileimage;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.flab.mame.profileimage.domain.ProfileImage;
+import com.flab.mame.profileimage.domain.ProfileImageRepository;
 
 import lombok.RequiredArgsConstructor;
 

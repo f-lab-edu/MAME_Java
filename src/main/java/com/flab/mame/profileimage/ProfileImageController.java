@@ -1,4 +1,4 @@
-package com.flab.mame.photo;
+package com.flab.mame.profileimage;
 
 import java.io.IOException;
 
@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.flab.mame.profileimage.domain.ProfileImage;
 
 import lombok.RequiredArgsConstructor;
 
