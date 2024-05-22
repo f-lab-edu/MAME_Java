@@ -3,8 +3,8 @@ package com.flab.mame.user;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.flab.mame.global.ErrorCode;
-import com.flab.mame.global.RestApiException;
+import com.flab.mame.global.exception.ErrorCode;
+import com.flab.mame.global.exception.RestApiException;
 import com.flab.mame.user.domain.User;
 import com.flab.mame.user.domain.UserRepository;
 import com.flab.mame.user.dto.UserSignupRequest;

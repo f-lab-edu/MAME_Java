@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.flab.mame.global.CurrentUser;
+import com.flab.mame.global.resolvers.CurrentUser;
 import com.flab.mame.profile.domain.Profile;
 
 import jakarta.validation.Valid;

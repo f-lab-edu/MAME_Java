@@ -6,14 +6,15 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.flab.mame.global.CurrentProfile;
-import com.flab.mame.global.ErrorCode;
-import com.flab.mame.global.RestApiException;
+import com.flab.mame.global.exception.ErrorCode;
+import com.flab.mame.global.exception.RestApiException;
 import com.flab.mame.user.domain.UserSessionConst;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class CurrentProfileArgumentResolver implements HandlerMethodArgumentResolver {
 
 	@Override
@@ -36,6 +37,8 @@ public class CurrentProfileArgumentResolver implements HandlerMethodArgumentReso
 			throw new RestApiException(ErrorCode.PROFILE_INCOMPLETED);
 		}
 
-		return (Long)session.getAttribute(UserSessionConst.PROFILE_ID);
+		Long profileId = (Long)session.getAttribute(UserSessionConst.PROFILE_ID);
+		log.info("profileId = {}", profileId);
+		return profileId;
 	}
 }

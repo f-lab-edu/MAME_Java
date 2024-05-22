@@ -1,4 +1,4 @@
-package com.flab.mame.global;
+package com.flab.mame.global.resolvers;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

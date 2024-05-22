@@ -3,6 +3,8 @@ package com.flab.mame.global;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import com.flab.mame.global.exception.ErrorCode;
+import com.flab.mame.global.exception.RestApiException;
 import com.flab.mame.user.domain.UserSessionConst;
 
 import jakarta.servlet.http.HttpServletRequest;

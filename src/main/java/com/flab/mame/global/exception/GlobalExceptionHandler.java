@@ -1,4 +1,4 @@
-package com.flab.mame.global;
+package com.flab.mame.global.exception;
 
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 

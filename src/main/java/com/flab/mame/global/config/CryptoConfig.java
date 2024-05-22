@@ -1,4 +1,4 @@
-package com.flab.mame.global;
+package com.flab.mame.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
