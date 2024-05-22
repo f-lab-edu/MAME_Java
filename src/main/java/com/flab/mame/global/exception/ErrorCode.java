@@ -18,8 +18,10 @@ public enum ErrorCode {
 
 	// Profile
 	PROFILE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 프로필"),
-	PROFILE_INCOMPLETED(HttpStatus.NOT_FOUND, "프로필 미완성");
+	PROFILE_INCOMPLETED(HttpStatus.NOT_FOUND, "프로필 미완성"),
 
+	// Profile Image
+	PROFILE_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 프로필 사진");
 	private final HttpStatus httpStatus;
 	private final String message;
 
