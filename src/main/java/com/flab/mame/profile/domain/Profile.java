@@ -7,6 +7,7 @@ import com.flab.mame.profile.ProfileUpdateRequest;
 import com.flab.mame.profileimage.domain.ProfileImage;
 import com.flab.mame.user.domain.User;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,6 +15,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
@@ -51,10 +53,11 @@ public class Profile {
 	@NotBlank
 	private String introduction;
 
-	@OneToOne(mappedBy = "profile")
+	@OneToOne
+	@JoinColumn(name = "user_id")
 	private User user;
 
-	@OneToMany(mappedBy = "profile")
+	@OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProfileImage> profileImages = new ArrayList<>();
 
 	public void updateProfile(final ProfileUpdateRequest request) {

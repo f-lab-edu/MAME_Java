@@ -40,10 +40,12 @@ public class ProfileController {
 	}
 
 	@PutMapping
-	public Profile updateProfile(@CurrentUser final Long userId,
+	public void updateProfile(@CurrentUser final Long userId,
 		@RequestBody @Valid final ProfileUpdateRequest request) {
 		log.info("updateProfile for user: {}", userId);
-		return profileService.updateProfile(userId, request);
+
+		profileService.updateProfile(userId, request);
+
 	}
 
 }

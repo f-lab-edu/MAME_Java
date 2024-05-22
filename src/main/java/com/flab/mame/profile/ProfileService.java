@@ -9,7 +9,6 @@ import com.flab.mame.profile.domain.Profile;
 import com.flab.mame.profile.domain.ProfileRepository;
 import com.flab.mame.user.domain.User;
 import com.flab.mame.user.domain.UserRepository;
-import com.flab.mame.user.domain.UserSessionConst;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,6 @@ public class ProfileService {
 
 	private final ProfileRepository profileRepository;
 	private final UserRepository userRepository;
-
 	private final HttpSession httpSession;
 
 	public void createProfile(final Long userId, final ProfileCreateRequest request) {
@@ -37,11 +35,6 @@ public class ProfileService {
 			.build();
 
 		profileRepository.save(newProfile);
-		foundUser.createProfile(newProfile);
-
-		if (httpSession.getAttribute(UserSessionConst.PROFILE_ID) == null) {
-			httpSession.setAttribute(UserSessionConst.PROFILE_ID, newProfile.getId());
-		}
 	}
 
 	@Transactional(readOnly = true)
@@ -52,12 +45,10 @@ public class ProfileService {
 		return foundProfile;
 	}
 
-	public Profile updateProfile(final Long userId, final ProfileUpdateRequest request) {
-		User foundUser = userRepository.findById(userId)
-			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
+	public void updateProfile(final Long userId, final ProfileUpdateRequest request) {
+		final Profile foundProfile = profileRepository.findByUserId(userId)
+			.orElseThrow(() -> new RestApiException(ErrorCode.PROFILE_NOT_FOUND));
 
-		foundUser.getProfile().updateProfile(request);
-
-		return foundUser.getProfile();
+		foundProfile.updateProfile(request);
 	}
 }

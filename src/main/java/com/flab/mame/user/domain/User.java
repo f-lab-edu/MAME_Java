@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.flab.mame.profile.domain.Profile;
 import com.flab.mame.swipe.Swipe;
 
 import jakarta.persistence.Column;
@@ -13,9 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -44,10 +41,6 @@ public class User {
 	@Column(nullable = false, length = 20)
 	@Length(min = 12, max = 20, message = "비밀번호는 최소 12글자 이상, 최대 20글자 이하입니다.")
 	private String password;
-	
-	@OneToOne
-	@JoinColumn(name = "profile_id")
-	private Profile profile;
 
 	@OneToMany(mappedBy = "swiper")
 	private List<Swipe> swipesSent = new ArrayList<>();
@@ -55,9 +48,7 @@ public class User {
 	@OneToMany(mappedBy = "swipee")
 	private List<Swipe> swipesReceived = new ArrayList<>();
 
-	public void createProfile(Profile newProfile) {
-		this.profile = newProfile;
-	}
+
 
 
 
