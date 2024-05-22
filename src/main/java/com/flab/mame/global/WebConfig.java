@@ -7,6 +7,9 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.flab.mame.global.resolvers.CurrentProfileArgumentResolver;
+import com.flab.mame.global.resolvers.CurrentUserArgumentResolver;
+
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
@@ -20,5 +23,6 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
 		resolvers.add(new CurrentUserArgumentResolver());
+		resolvers.add(new CurrentProfileArgumentResolver());
 	}
 }
