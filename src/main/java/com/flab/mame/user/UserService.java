@@ -3,6 +3,10 @@ package com.flab.mame.user;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.flab.mame.user.domain.User;
+import com.flab.mame.user.domain.UserRepository;
+import com.flab.mame.user.dto.UserSignupRequest;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
