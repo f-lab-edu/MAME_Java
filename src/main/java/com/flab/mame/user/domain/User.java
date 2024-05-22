@@ -6,7 +6,6 @@ import java.util.List;
 import org.hibernate.validator.constraints.Length;
 
 import com.flab.mame.profile.domain.Profile;
-import com.flab.mame.profileimage.domain.ProfileImage;
 import com.flab.mame.swipe.Swipe;
 
 import jakarta.persistence.Column;
@@ -45,20 +44,10 @@ public class User {
 	@Column(nullable = false, length = 20)
 	@Length(min = 12, max = 20, message = "비밀번호는 최소 12글자 이상, 최대 20글자 이하입니다.")
 	private String password;
-
-	/*
-	 *  TODO: 프로필 정보 받아오기
-	 *
-	 * */
+	
 	@OneToOne
 	@JoinColumn(name = "profile_id")
 	private Profile profile;
-
-	/*
-	 * TODO : List for photos
-	 * */
-	@OneToMany(mappedBy = "user")
-	private List<ProfileImage> profileImages = new ArrayList<>();
 
 	@OneToMany(mappedBy = "swiper")
 	private List<Swipe> swipesSent = new ArrayList<>();

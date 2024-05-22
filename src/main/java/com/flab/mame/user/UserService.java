@@ -24,7 +24,7 @@ public class UserService {
 			throw new RestApiException(ErrorCode.EMAIL_ALREADY_USED);
 		}
 
-		User newUser = User.builder()
+		final User newUser = User.builder()
 			.email(request.getEmail())
 			.password(request.getPassword())
 			.build();
@@ -37,7 +37,7 @@ public class UserService {
 		/*
 		 * TODO: 유저 못찾을 시 예외처리
 		 * */
-		User foundUser = userRepository.findById(id)
+		final User foundUser = userRepository.findById(id)
 			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
 
 		return foundUser;
@@ -57,7 +57,7 @@ public class UserService {
 		/*
 		 * TODO: 유저 못찾을 시 예외처리
 		 * */
-		User foundUser = userRepository.findById(id)
+		final User foundUser = userRepository.findById(id)
 			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
 		userRepository.delete(foundUser);
 
