@@ -41,6 +41,7 @@ public class UserController {
 */
 	@DeleteMapping
 	public void deleteUser(@CurrentUser final Long id) {
+		log.info("userId = {}", id);
 		userService.deleteUser(id);
 	}
 

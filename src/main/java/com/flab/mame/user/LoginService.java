@@ -3,6 +3,8 @@ package com.flab.mame.user;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.flab.mame.global.ErrorCode;
+import com.flab.mame.global.RestApiException;
 import com.flab.mame.user.domain.User;
 import com.flab.mame.user.domain.UserRepository;
 import com.flab.mame.user.domain.UserSessionConst;
@@ -26,10 +28,12 @@ public class LoginService {
 		 * TODO: 유저 못찾을 경우, 비밀번호 틀릴 경우, 비밀번호 검증
 		 * */
 		User foundUser = userRepository.findByEmail(reqeust.getEmail())
-			.orElseThrow(() -> new RuntimeException("유저 못찾음"));
-
+			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
+		/*
+		 * TODO: 비밀번호 암호화 및 매칭
+		 * */
 		if (!foundUser.getPassword().equals(reqeust.getPassword())) {
-			throw new RuntimeException("비밀번호 틀림");
+			throw new RestApiException(ErrorCode.INVALID_LOGIN_REQUEST);
 		}
 
 		httpSession.setAttribute(UserSessionConst.USER_ID, foundUser.getId());

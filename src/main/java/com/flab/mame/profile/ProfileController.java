@@ -28,21 +28,22 @@ public class ProfileController {
 		/*
 		 * TODO 유저정보를 받아와서 프로필 완성 유무 체크
 		 * */
-
+		log.info("createProfile for userId: {}", userId);
 		profileService.createProfile(userId, request);
 	}
 
 	@GetMapping("/{id}")
 	public Profile getProfileById(@PathVariable final Long id) {
+		log.info("getProfileById with id: {}", id);
 		Profile foundProfile = profileService.getProfileById(id);
-
 		return foundProfile;
 	}
 
 	@PutMapping
-	public Profile updateProfile(@CurrentUser final Long userid,
+	public Profile updateProfile(@CurrentUser final Long userId,
 		@RequestBody @Valid final ProfileUpdateRequest request) {
-		return profileService.updateProfile(userid, request);
+		log.info("updateProfile for user: {}", userId);
+		return profileService.updateProfile(userId, request);
 	}
 
 }
