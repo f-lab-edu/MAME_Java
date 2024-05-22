@@ -1,6 +1,10 @@
 package com.flab.mame.profile.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.flab.mame.profile.ProfileUpdateRequest;
+import com.flab.mame.profileimage.domain.ProfileImage;
 import com.flab.mame.user.domain.User;
 
 import jakarta.persistence.Column;
@@ -10,6 +14,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -46,18 +51,21 @@ public class Profile {
 	@NotBlank
 	private String introduction;
 
-	/*
-	 * TODO: 유저와 연관관계 매핑
-	 *
-	 * */
 	@OneToOne(mappedBy = "profile")
 	private User user;
+
+	@OneToMany(mappedBy = "profile")
+	private List<ProfileImage> profileImages = new ArrayList<>();
 
 	public void updateProfile(final ProfileUpdateRequest request) {
 		this.nickname = request.getNickname();
 		this.age = request.getAge();
 		this.genderType = request.getGenderType();
 		this.introduction = request.getIntroduction();
+	}
+
+	public void addProfileImage(final ProfileImage newProfileImage) {
+		profileImages.add(newProfileImage);
 	}
 
 }
