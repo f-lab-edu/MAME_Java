@@ -1,4 +1,4 @@
-package com.flab.mame.global;
+package com.flab.mame.global.config;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.flab.mame.global.LoginCheckInterceptor;
 import com.flab.mame.global.resolvers.CurrentProfileArgumentResolver;
 import com.flab.mame.global.resolvers.CurrentUserArgumentResolver;
 
