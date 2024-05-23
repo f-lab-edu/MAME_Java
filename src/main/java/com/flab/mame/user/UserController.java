@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.flab.mame.global.resolvers.CurrentUser;
+import com.flab.mame.global.annotation.CurrentUser;
 import com.flab.mame.user.domain.User;
 import com.flab.mame.user.dto.UserSignupRequest;
 
