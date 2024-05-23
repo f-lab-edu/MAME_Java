@@ -68,15 +68,21 @@ public class ProfileImageService {
 		/*
 		 * TODO: Checked Exception handling needed
 		 * */
+		final Profile profile = profileRepository.findByUserId(userId)
+			.orElseThrow(() -> new RestApiException(ErrorCode.PROFILE_NOT_FOUND));
 
-		final ProfileImage foundProfileImage = profileImageRepository.findByIdAndProfileId(userId, profileImageId)
+		final ProfileImage foundProfileImage = profileImageRepository.findByIdAndProfileId(profileImageId,
+				profile.getId())
 			.orElseThrow(() -> new RestApiException(ErrorCode.PROFILE_IMAGE_NOT_FOUND));
 
 		foundProfileImage.updateProfileImage(IMAGE_BASE_URL, image);
 	}
 
 	public void deleteProfileImage(final Long userId, final Long profileImageId) {
-		ProfileImage foundProfileImage = profileImageRepository.findByIdAndProfileId(userId, profileImageId)
+		final Profile profile = profileRepository.findByUserId(userId)
+			.orElseThrow(() -> new RestApiException(ErrorCode.PROFILE_NOT_FOUND));
+
+		ProfileImage foundProfileImage = profileImageRepository.findByIdAndProfileId(profileImageId, profile.getId())
 			.orElseThrow(() -> new RestApiException(ErrorCode.PROFILE_IMAGE_NOT_FOUND));
 
 		profileImageRepository.delete(foundProfileImage);
