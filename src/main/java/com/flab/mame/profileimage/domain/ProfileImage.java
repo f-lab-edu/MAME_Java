@@ -1,5 +1,7 @@
 package com.flab.mame.profileimage.domain;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -50,11 +52,13 @@ public class ProfileImage {
 	@JoinColumn(name = "user_id")
 	private User user;*/
 
-	public void updateProfileImage(final String IMAGE_BASE_URL, final MultipartFile multipartFile) {
-		this.originalFileName = multipartFile.getOriginalFilename();
-		this.storedFileName = UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
-		this.fileSize = multipartFile.getSize();
+	public void updateProfileImage(final String IMAGE_BASE_URL, final MultipartFile image) throws IOException {
+		this.originalFileName = image.getOriginalFilename();
+		this.storedFileName = UUID.randomUUID() + "-" + image.getOriginalFilename();
+		this.fileSize = image.getSize();
 		this.imageURL = IMAGE_BASE_URL + storedFileName;
+		image.transferTo(new File(IMAGE_BASE_URL + storedFileName));
+
 	}
 
 }

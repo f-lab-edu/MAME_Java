@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.flab.mame.global.resolvers.CurrentProfile;
-import com.flab.mame.profileimage.domain.ProfileImage;
+import com.flab.mame.global.resolvers.CurrentUser;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/profile-images")
@@ -24,19 +25,21 @@ public class ProfileImageController {
 	private final ProfileImageService photoService;
 
 	@PostMapping
-	public void addProfileImage(@CurrentProfile final Long profileId,
+	public void addProfileImage(@CurrentUser final Long userId,
 		@RequestParam(value = "image") final MultipartFile image) throws IOException {
-		photoService.addProfileImage(profileId, image);
+		log.info("addProfileImage with userId = {}", userId);
+		photoService.addProfileImage(userId, image);
 	}
 
-	@PatchMapping("/{id}")
-	public ProfileImage updateProfileImage(@PathVariable final Long id,
-		@RequestParam("image") final MultipartFile image) {
-		return photoService.updateProfileImage(id, image);
+	@PatchMapping("/{profileImageId}")
+	public void changeProfileImage(@CurrentUser final Long userId,
+		@PathVariable final Long profileImageId,
+		@RequestParam("image") final MultipartFile image) throws IOException {
+		photoService.changeProfileImage(userId, profileImageId, image);
 	}
 
-	@DeleteMapping("/{id}")
-	public void deleteProfileImage(@PathVariable final Long id) {
-		photoService.deleteProfileImage(id);
+	@DeleteMapping("/{profileImageId}")
+	public void deleteProfileImage(@CurrentUser final Long userId, @PathVariable final Long profileImageId) {
+		photoService.deleteProfileImage(userId, profileImageId);
 	}
 }

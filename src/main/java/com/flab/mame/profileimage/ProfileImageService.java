@@ -17,10 +17,12 @@ import com.flab.mame.profileimage.domain.ProfileImage;
 import com.flab.mame.profileimage.domain.ProfileImageRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class ProfileImageService {
 
 	@Value("${image.url}")
@@ -29,10 +31,12 @@ public class ProfileImageService {
 	private final ProfileRepository profileRepository;
 	private final ProfileImageRepository profileImageRepository;
 
-	public void addProfileImage(final Long profileId, final MultipartFile image) throws IOException {
-		Profile foundProfile = profileRepository.findById(profileId)
+	public void addProfileImage(final Long userId, final MultipartFile image) throws IOException {
+		final Profile foundProfile = profileRepository.findByUserId(userId)
 			.orElseThrow(() -> new RestApiException(ErrorCode.PROFILE_NOT_FOUND));
-
+		/*
+		 * TODO : 추후 Util 만들기
+		 * */
 		String originalFileName = image.getOriginalFilename();
 		String storedFileName = UUID.randomUUID() + "-" + originalFileName;
 		image.transferTo(new File(IMAGE_BASE_URL + storedFileName));
@@ -46,28 +50,35 @@ public class ProfileImageService {
 			.build();
 
 		profileImageRepository.save(newProfileImage);
+		foundProfile.addProfileImage(newProfileImage);
 
 	}
 
-	public ProfileImage viewProfileImage(final Long id) throws IOException {
+	@Transactional(readOnly = true)
+	public ProfileImage viewProfileImage(final Long id) {
 		final ProfileImage foundProfileImage = profileImageRepository.findById(id)
 			.orElseThrow(() -> new RuntimeException("없어"));
 
 		return foundProfileImage;
 	}
 
-	public ProfileImage updateProfileImage(Long id, MultipartFile image) {
-		ProfileImage foundProfileImage = profileImageRepository.findById(id)
-			.orElseThrow(() -> new RuntimeException("못찾음"));
+	public void changeProfileImage(final Long userId, final Long profileImageId,
+		final MultipartFile image) throws
+		IOException {
+		/*
+		 * TODO: Checked Exception handling needed
+		 * */
+
+		final ProfileImage foundProfileImage = profileImageRepository.findByIdAndProfileId(userId, profileImageId)
+			.orElseThrow(() -> new RestApiException(ErrorCode.PROFILE_IMAGE_NOT_FOUND));
 
 		foundProfileImage.updateProfileImage(IMAGE_BASE_URL, image);
-
-		return foundProfileImage;
 	}
 
-	public void deleteProfileImage(Long id) {
-		ProfileImage foundProfileImage = profileImageRepository.findById(id)
-			.orElseThrow(() -> new RuntimeException("못찾음"));
+	public void deleteProfileImage(final Long userId, final Long profileImageId) {
+		ProfileImage foundProfileImage = profileImageRepository.findByIdAndProfileId(userId, profileImageId)
+			.orElseThrow(() -> new RestApiException(ErrorCode.PROFILE_IMAGE_NOT_FOUND));
+
 		profileImageRepository.delete(foundProfileImage);
 	}
 }
