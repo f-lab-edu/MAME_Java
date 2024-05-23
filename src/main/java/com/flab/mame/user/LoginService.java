@@ -38,11 +38,6 @@ public class LoginService {
 
 		httpSession.setAttribute(UserSessionConst.USER_ID, foundUser.getId());
 
-		if (foundUser.getProfile() != null) {
-			httpSession.setAttribute(UserSessionConst.PROFILE_ID, foundUser.getProfile().getId());
-			log.info("profileId = {}", foundUser.getProfile().getId());
-		}
-
 		log.info("session Id = {}", httpSession.getId());
 		log.info("userId = {}", httpSession.getAttribute(UserSessionConst.USER_ID));
 
