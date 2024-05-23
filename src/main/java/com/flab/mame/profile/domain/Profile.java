@@ -1,5 +1,13 @@
-package com.flab.mame.profile;
+package com.flab.mame.profile.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.flab.mame.profile.ProfileUpdateRequest;
+import com.flab.mame.profileimage.domain.ProfileImage;
+import com.flab.mame.user.domain.User;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -7,6 +15,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -29,26 +40,35 @@ public class Profile {
 	@NotBlank
 	private String nickname;
 
+	@Column(nullable = false)
 	@NotNull
 	private int age;
 
+	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	@NotBlank
-	private Gender gender;
+	@NotNull
+	private GenderType genderType;
 
+	@Column(nullable = false)
 	@NotBlank
 	private String introduction;
+
+	@OneToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+
+	@OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ProfileImage> profileImages = new ArrayList<>();
 
 	public void updateProfile(final ProfileUpdateRequest request) {
 		this.nickname = request.getNickname();
 		this.age = request.getAge();
-		this.gender = request.getGender();
+		this.genderType = request.getGenderType();
 		this.introduction = request.getIntroduction();
 	}
 
-	/*
-	 * TODO: 유저와 연관관계 매핑
-	 *
-	 * */
+	public void addProfileImage(final ProfileImage newProfileImage) {
+		profileImages.add(newProfileImage);
+	}
 
 }

@@ -3,6 +3,12 @@ package com.flab.mame.user;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.flab.mame.global.exception.ErrorCode;
+import com.flab.mame.global.exception.RestApiException;
+import com.flab.mame.user.domain.User;
+import com.flab.mame.user.domain.UserRepository;
+import com.flab.mame.user.dto.UserSignupRequest;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -13,11 +19,12 @@ public class UserService {
 	private final UserRepository userRepository;
 
 	public void signup(final UserSignupRequest request) {
-		/*
-		 * TODO : 이메일 중복체크
-		 * */
 
-		User newUser = User.builder()
+		if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+			throw new RestApiException(ErrorCode.EMAIL_ALREADY_USED);
+		}
+
+		final User newUser = User.builder()
 			.email(request.getEmail())
 			.password(request.getPassword())
 			.build();
@@ -30,7 +37,8 @@ public class UserService {
 		/*
 		 * TODO: 유저 못찾을 시 예외처리
 		 * */
-		User foundUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("유저 없음"));
+		final User foundUser = userRepository.findById(id)
+			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
 
 		return foundUser;
 	}
@@ -49,7 +57,8 @@ public class UserService {
 		/*
 		 * TODO: 유저 못찾을 시 예외처리
 		 * */
-		User foundUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("유저 없음"));
+		final User foundUser = userRepository.findById(id)
+			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
 		userRepository.delete(foundUser);
 
 	}

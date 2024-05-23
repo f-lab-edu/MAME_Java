@@ -1,4 +1,4 @@
-package com.flab.mame.user;
+package com.flab.mame.user.domain;
 
 import java.util.Optional;
 

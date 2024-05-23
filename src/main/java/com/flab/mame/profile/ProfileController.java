@@ -1,6 +1,5 @@
 package com.flab.mame.profile;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,6 +7,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.flab.mame.global.resolvers.CurrentUser;
+import com.flab.mame.profile.domain.Profile;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,26 +24,28 @@ public class ProfileController {
 	private final ProfileService profileService;
 
 	@PostMapping
-	public ResponseEntity<Profile> createProfile(@RequestBody @Valid final ProfileCreateRequest request) {
+	public void createProfile(@CurrentUser final Long userId, @RequestBody @Valid final ProfileCreateRequest request) {
 		/*
 		 * TODO 유저정보를 받아와서 프로필 완성 유무 체크
 		 * */
-
-		Profile profile = profileService.createProfile(request);
-
-		return ResponseEntity.ok(profile);
+		log.info("createProfile for userId: {}", userId);
+		profileService.createProfile(userId, request);
 	}
 
-	@GetMapping("/{id}")
-	public Profile getProfileById(@PathVariable final Long id) {
-		Profile foundProfile = profileService.getProfileById(id);
-
+	@GetMapping("/{profileId}")
+	public Profile getProfileById(@PathVariable final Long profileId) {
+		log.info("getProfileById with profileId: {}", profileId);
+		Profile foundProfile = profileService.getProfileById(profileId);
 		return foundProfile;
 	}
 
-	@PutMapping("/{id}")
-	public Profile updateProfile(@PathVariable final Long id, @RequestBody @Valid final ProfileUpdateRequest request) {
-		return profileService.updateProfile(id, request);
+	@PutMapping
+	public void updateProfile(@CurrentUser final Long userId,
+		@RequestBody @Valid final ProfileUpdateRequest request) {
+		log.info("updateProfile for user: {}", userId);
+
+		profileService.updateProfile(userId, request);
+
 	}
 
 }
