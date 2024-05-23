@@ -32,10 +32,10 @@ public class ProfileController {
 		profileService.createProfile(userId, request);
 	}
 
-	@GetMapping("/{id}")
-	public Profile getProfileById(@PathVariable final Long id) {
-		log.info("getProfileById with id: {}", id);
-		Profile foundProfile = profileService.getProfileById(id);
+	@GetMapping("/{profileId}")
+	public Profile getProfileById(@PathVariable final Long profileId) {
+		log.info("getProfileById with profileId: {}", profileId);
+		Profile foundProfile = profileService.getProfileById(profileId);
 		return foundProfile;
 	}
 

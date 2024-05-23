@@ -23,6 +23,10 @@ public class ProfileService {
 	private final HttpSession httpSession;
 
 	public void createProfile(final Long userId, final ProfileCreateRequest request) {
+		if (profileRepository.findByUserId(userId).isPresent()) {
+			throw new RestApiException(ErrorCode.PROFILE_ALREADY_EXIST);
+		}
+
 		User foundUser = userRepository.findById(userId)
 			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
 
