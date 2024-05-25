@@ -22,7 +22,13 @@ public enum ErrorCode {
 	PROFILE_ALREADY_EXIST(HttpStatus.CONFLICT, "프로필 이미 존재함"),
 
 	// Profile Image
-	PROFILE_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 프로필 사진");
+	PROFILE_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 프로필 사진"),
+
+	// Swipe
+	SWIPE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 Swipe"),
+
+	// UserMatch
+	USER_MATCH_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 User Match");
 	private final HttpStatus httpStatus;
 	private final String message;
 

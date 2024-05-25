@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.flab.mame.matcheduser.MatchedUser;
 import com.flab.mame.swipe.Swipe;
 
 import jakarta.persistence.Column;
@@ -48,6 +49,8 @@ public class User {
 	@OneToMany(mappedBy = "swipee")
 	private List<Swipe> swipesReceived = new ArrayList<>();
 
+	@OneToMany(mappedBy = "user1")
+	private List<MatchedUser> matchedUserMatchesAsSwiper = new ArrayList<>();
 
 
 
