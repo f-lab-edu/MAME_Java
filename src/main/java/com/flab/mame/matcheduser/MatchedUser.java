@@ -1,10 +1,8 @@
-package com.flab.mame.swipe;
+package com.flab.mame.matcheduser;
 
 import com.flab.mame.user.domain.User;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,25 +18,17 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Swipe {
+public class MatchedUser {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "swiper_user_id")
-	private User swiper;
+	@JoinColumn(name = "user1_id")
+	private User user1;
 
 	@ManyToOne
-	@JoinColumn(name = "swipee_user_id")
-	private User swipee;
-
-	@Enumerated(EnumType.STRING)
-	private SwipeType type;
-
-	/*
-	 * TODO : 매칭 유무 Enum 구현하기
-	 * */
-
+	@JoinColumn(name = "user2_id")
+	private User user2;
 }
