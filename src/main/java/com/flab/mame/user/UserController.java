@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flab.mame.global.annotation.CurrentUser;
-import com.flab.mame.user.domain.User;
+import com.flab.mame.user.domain.Member;
 import com.flab.mame.user.dto.UserSignupRequest;
 
 import jakarta.validation.Valid;
@@ -29,7 +29,7 @@ public class UserController {
 	}
 
 	@GetMapping
-	public User getUserById(@CurrentUser final Long id) {
+	public Member getUserById(@CurrentUser final Long id) {
 		log.info("userId = {}", id);
 		return userService.getUserById(id);
 	}

@@ -5,11 +5,11 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.flab.mame.user.domain.User;
+import com.flab.mame.user.domain.Member;
 
 public interface MatchedUserRepository extends JpaRepository<MatchedUser, Long> {
 
-	List<MatchedUser> findAllByUser1(User user1);
+	List<MatchedUser> findAllByMember1(Member member1);
 
-	Optional<MatchedUser> findByUser1(User foundUser);
+	Optional<MatchedUser> findByMember1(Member foundMember);
 }

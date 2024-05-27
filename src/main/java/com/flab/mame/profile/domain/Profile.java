@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.flab.mame.profile.ProfileUpdateRequest;
 import com.flab.mame.profileimage.domain.ProfileImage;
-import com.flab.mame.user.domain.User;
+import com.flab.mame.user.domain.Member;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -54,8 +54,8 @@ public class Profile {
 	private String introduction;
 
 	@OneToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+	@JoinColumn(name = "member_id")
+	private Member member;
 
 	@OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProfileImage> profileImages = new ArrayList<>();

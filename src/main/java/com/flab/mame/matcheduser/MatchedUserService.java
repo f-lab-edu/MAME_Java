@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.flab.mame.global.exception.ErrorCode;
 import com.flab.mame.global.exception.RestApiException;
-import com.flab.mame.user.domain.User;
+import com.flab.mame.user.domain.Member;
 import com.flab.mame.user.domain.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -25,9 +25,9 @@ public class MatchedUserService {
 	private final UserRepository userRepository;
 
 	public List<MatchedUserResponse> getAllUserMatchesByUser1Id(final Long id) {
-		final User foundUser = userRepository.findById(id)
+		final Member foundMember = userRepository.findById(id)
 			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
-		final List<MatchedUserResponse> matches = matchedUserRepository.findAllByUser1(foundUser).stream()
+		final List<MatchedUserResponse> matches = matchedUserRepository.findAllByMember1(foundMember).stream()
 			.map(MatchedUserResponse::new)
 			.collect(Collectors.toList());
 
@@ -36,13 +36,13 @@ public class MatchedUserService {
 	}
 
 	public void deleteUserMatchByUser1Id(Long id) {
-		final User foundUser1 = userRepository.findById(id)
+		final Member foundMember1 = userRepository.findById(id)
 			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
-		final MatchedUser foundUserMatchForMatchedUser1 = matchedUserRepository.findByUser1(foundUser1)
+		final MatchedUser foundUserMatchForMatchedUser1 = matchedUserRepository.findByMember1(foundMember1)
 			.orElseThrow(() -> new RestApiException(ErrorCode.USER_MATCH_NOT_FOUND));
 
-		final User user2 = foundUserMatchForMatchedUser1.getUser2();
-		MatchedUser foundUserMatchForMatchedUser2 = matchedUserRepository.findByUser1(user2)
+		final Member member2 = foundUserMatchForMatchedUser1.getMember2();
+		MatchedUser foundUserMatchForMatchedUser2 = matchedUserRepository.findByMember1(member2)
 			.orElseThrow(() -> new RestApiException(ErrorCode.USER_MATCH_NOT_FOUND));
 
 		matchedUserRepository.delete(foundUserMatchForMatchedUser1);

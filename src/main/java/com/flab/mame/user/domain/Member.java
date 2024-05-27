@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Member {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,7 +49,7 @@ public class User {
 	@OneToMany(mappedBy = "swipee")
 	private List<Swipe> swipesReceived = new ArrayList<>();
 
-	@OneToMany(mappedBy = "user1")
+	@OneToMany(mappedBy = "member1")
 	private List<MatchedUser> matchedUserMatchesAsSwiper = new ArrayList<>();
 
 

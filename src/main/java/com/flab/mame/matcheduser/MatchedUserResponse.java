@@ -13,8 +13,8 @@ public class MatchedUserResponse {
 
 	public MatchedUserResponse(final MatchedUser matchedUser) {
 		this.id = matchedUser.getId();
-		this.user1Id = matchedUser.getUser1().getId();
-		this.user2Id = matchedUser.getUser2().getId();
+		this.user1Id = matchedUser.getMember1().getId();
+		this.user2Id = matchedUser.getMember2().getId();
 
 	}
 }

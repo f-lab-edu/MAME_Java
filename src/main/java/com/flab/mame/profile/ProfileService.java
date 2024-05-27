@@ -7,7 +7,7 @@ import com.flab.mame.global.exception.ErrorCode;
 import com.flab.mame.global.exception.RestApiException;
 import com.flab.mame.profile.domain.Profile;
 import com.flab.mame.profile.domain.ProfileRepository;
-import com.flab.mame.user.domain.User;
+import com.flab.mame.user.domain.Member;
 import com.flab.mame.user.domain.UserRepository;
 
 import jakarta.servlet.http.HttpSession;
@@ -23,11 +23,11 @@ public class ProfileService {
 	private final HttpSession httpSession;
 
 	public void createProfile(final Long userId, final ProfileCreateRequest request) {
-		if (profileRepository.findByUserId(userId).isPresent()) {
+		if (profileRepository.findByMemberId(userId).isPresent()) {
 			throw new RestApiException(ErrorCode.PROFILE_ALREADY_EXIST);
 		}
 
-		User foundUser = userRepository.findById(userId)
+		Member foundMember = userRepository.findById(userId)
 			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
 
 		Profile newProfile = Profile.builder()
@@ -35,7 +35,7 @@ public class ProfileService {
 			.age(request.getAge())
 			.genderType(request.getGenderType())
 			.introduction(request.getIntroduction())
-			.user(foundUser)
+			.member(foundMember)
 			.build();
 
 		profileRepository.save(newProfile);
@@ -50,7 +50,7 @@ public class ProfileService {
 	}
 
 	public void updateProfile(final Long userId, final ProfileUpdateRequest request) {
-		final Profile foundProfile = profileRepository.findByUserId(userId)
+		final Profile foundProfile = profileRepository.findByMemberId(userId)
 			.orElseThrow(() -> new RestApiException(ErrorCode.PROFILE_NOT_FOUND));
 
 		foundProfile.updateProfile(request);

@@ -8,7 +8,7 @@ import com.flab.mame.global.exception.ErrorCode;
 import com.flab.mame.global.exception.RestApiException;
 import com.flab.mame.matcheduser.MatchedUser;
 import com.flab.mame.matcheduser.MatchedUserRepository;
-import com.flab.mame.user.domain.User;
+import com.flab.mame.user.domain.Member;
 import com.flab.mame.user.domain.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -29,10 +29,10 @@ public class SwipeService {
 		 *
 		 * */
 
-		User swiper = userRepository.findById(swiperId)
+		Member swiper = userRepository.findById(swiperId)
 			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
 
-		User swipee = userRepository.findById(request.getSwipeeId())
+		Member swipee = userRepository.findById(request.getSwipeeId())
 			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
 
 		Swipe newSwipe = Swipe.builder()
@@ -48,13 +48,13 @@ public class SwipeService {
 				.filter(swipe -> swipe.getType().equals(SwipeType.LIKE))
 				.ifPresent(swipe -> {
 					MatchedUser newMatchForUser1 = MatchedUser.builder()
-						.user1(swiper)
-						.user2(swipee)
+						.member1(swiper)
+						.member2(swipee)
 						.build();
 
 					MatchedUser newMatchForUser2 = MatchedUser.builder()
-						.user1(swipee)
-						.user2(swiper)
+						.member1(swipee)
+						.member2(swiper)
 						.build();
 
 					matchedUserRepository.save(newMatchForUser1);
