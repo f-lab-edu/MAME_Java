@@ -24,4 +24,8 @@ public class ProfileCreateRequest {
 
 	@NotBlank
 	private String introduction;
+
+	@NotBlank
+	private String address;
+
 }

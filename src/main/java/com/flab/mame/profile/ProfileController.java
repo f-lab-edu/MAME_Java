@@ -1,5 +1,7 @@
 package com.flab.mame.profile;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,11 +34,21 @@ public class ProfileController {
 		profileService.createProfile(userId, request);
 	}
 
-	@GetMapping("/{profileId}")
+	// @GetMapping("/{profileId}")
 	public Profile getProfileById(@PathVariable final Long profileId) {
 		log.info("getProfileById with profileId: {}", profileId);
 		Profile foundProfile = profileService.getProfileById(profileId);
 		return foundProfile;
+	}
+
+	@PostMapping("/address")
+	public void setProfileAddress(@CurrentUser final Long memberId, String address) {
+		profileService.setProfileAddress(memberId, address);
+	}
+
+	@GetMapping
+	public List<ProfileResponse> findNearByProfiles(@CurrentUser final Long memberId) {
+		return profileService.findNearByProfiles(memberId);
 	}
 
 	@PutMapping
