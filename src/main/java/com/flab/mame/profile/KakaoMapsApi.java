@@ -13,13 +13,15 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class KakaoMapsApi {
-	
+
 	@Value("${kakao.rest.api.key}")
 	private String KAKAO_REST_API_KEY;
 
+	private String url = "https://dapi.kakao.com/v2/local/search/address.json?query=";
+
 	public KakaoApiResponse.Address getLatitudeAndLongitudeFromAddress(final String address) {
 		final RestTemplate restTemplate = new RestTemplate();
-		String url = "https://dapi.kakao.com/v2/local/search/address.json?query=";
+
 		String requestUrl = url + address;
 
 		HttpHeaders httpHeaders = new HttpHeaders();
@@ -32,13 +34,18 @@ public class KakaoMapsApi {
 			HttpMethod.GET,
 			entity,
 			KakaoApiResponse.class);
-
+		/*
+		 * TODO: Full adress를 받아서 filter로 한번 더 주소 검증한뒤 반환하기
+		 *  stream().fiter(address ->
+		 *
+		 * */
 		log.info("response = {}", exchange.getBody());
 		/*
 		 *
 		 * TODO: 예외처리
 		 * */
 		KakaoApiResponse response = exchange.getBody();
+
 		return response.getDocuments().get(0);
 	}
 }

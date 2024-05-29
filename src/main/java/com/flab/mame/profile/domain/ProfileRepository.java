@@ -11,10 +11,14 @@ import org.springframework.data.repository.query.Param;
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
 	Optional<Profile> findByMemberId(Long memberId);
 
+	/*
+	 *
+	 * TODO: 추후 리팩토링 고민하기.
+	 * */
 	@Query(value = "select * from Profile p "
 		+ "where ST_DWithin(p.location, :location, :radius, false) = true and p.id <> :id", nativeQuery = true)
-	List<Profile> findNearbyProfiles(@Param("location") Point location,
+	List<Profile> findProfilesNearBy(@Param("location") Point location,
 		@Param("id") Long id,
-		@Param("radius") double radius);
+		@Param("radius") Long radius);
 
 }

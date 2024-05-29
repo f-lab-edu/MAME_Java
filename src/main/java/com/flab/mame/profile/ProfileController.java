@@ -3,15 +3,14 @@ package com.flab.mame.profile;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.flab.mame.global.annotation.CurrentUser;
-import com.flab.mame.profile.domain.Profile;
+import com.flab.mame.global.annotation.CurrentMember;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,8 @@ public class ProfileController {
 	private final ProfileService profileService;
 
 	@PostMapping
-	public void createProfile(@CurrentUser final Long userId, @RequestBody @Valid final ProfileCreateRequest request) {
+	public void createProfile(@CurrentMember final Long userId,
+		@RequestBody @Valid final ProfileCreateRequest request) {
 		/*
 		 * TODO 유저정보를 받아와서 프로필 완성 유무 체크
 		 * */
@@ -34,25 +34,17 @@ public class ProfileController {
 		profileService.createProfile(userId, request);
 	}
 
-	// @GetMapping("/{profileId}")
-	public Profile getProfileById(@PathVariable final Long profileId) {
-		log.info("getProfileById with profileId: {}", profileId);
-		Profile foundProfile = profileService.getProfileById(profileId);
-		return foundProfile;
-	}
-
-	@PostMapping("/address")
-	public void setProfileAddress(@CurrentUser final Long memberId, String address) {
-		profileService.setProfileAddress(memberId, address);
-	}
-
+	// radius 1 = 1m, 100 = 100m
 	@GetMapping
-	public List<ProfileResponse> findNearByProfiles(@CurrentUser final Long memberId) {
-		return profileService.findNearByProfiles(memberId);
+	public List<ProfileResponse> findProfilesNearBy(@CurrentMember final Long memberId,
+		@RequestParam(defaultValue = "10000", required = false) final Long radius) {
+		log.info("memberId = {}", memberId);
+		log.info("radius = {}", radius);
+		return profileService.findProfilesNearBy(memberId, radius);
 	}
 
 	@PutMapping
-	public void updateProfile(@CurrentUser final Long userId,
+	public void updateProfile(@CurrentMember final Long userId,
 		@RequestBody @Valid final ProfileUpdateRequest request) {
 		log.info("updateProfile for user: {}", userId);
 

@@ -61,6 +61,7 @@ public class Profile {
 
 	@Column(columnDefinition = "geometry(Point, 4326)")
 	private Point location;
+	
 	@OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProfileImage> profileImages = new ArrayList<>();
 

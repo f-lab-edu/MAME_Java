@@ -3,13 +3,13 @@ package com.flab.mame.swipe;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.flab.mame.global.annotation.CurrentUser;
+import com.flab.mame.global.annotation.CurrentMember;
 import com.flab.mame.global.exception.ErrorCode;
 import com.flab.mame.global.exception.RestApiException;
 import com.flab.mame.matcheduser.MatchedUser;
 import com.flab.mame.matcheduser.MatchedUserRepository;
 import com.flab.mame.user.domain.Member;
-import com.flab.mame.user.domain.UserRepository;
+import com.flab.mame.user.domain.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,20 +19,20 @@ import lombok.RequiredArgsConstructor;
 public class SwipeService {
 
 	private final SwipeRepository swipeRepository;
-	private final UserRepository userRepository;
+	private final MemberRepository memberRepository;
 
 	private final MatchedUserRepository matchedUserRepository;
 
-	public void swipeUser(@CurrentUser final Long swiperId, final SwipeRequest request) {
+	public void swipeUser(@CurrentMember final Long swiperId, final SwipeRequest request) {
 		/*
 		 * TODO: 프로필 미완성시 예외처리
 		 *
 		 * */
 
-		Member swiper = userRepository.findById(swiperId)
+		Member swiper = memberRepository.findById(swiperId)
 			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
 
-		Member swipee = userRepository.findById(request.getSwipeeId())
+		Member swipee = memberRepository.findById(request.getSwipeeId())
 			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
 
 		Swipe newSwipe = Swipe.builder()

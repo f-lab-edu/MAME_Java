@@ -14,7 +14,7 @@ import com.flab.mame.global.exception.RestApiException;
 import com.flab.mame.profile.domain.Profile;
 import com.flab.mame.profile.domain.ProfileRepository;
 import com.flab.mame.user.domain.Member;
-import com.flab.mame.user.domain.UserRepository;
+import com.flab.mame.user.domain.MemberRepository;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ProfileService {
 
 	private final ProfileRepository profileRepository;
-	private final UserRepository userRepository;
+	private final MemberRepository memberRepository;
 	private final HttpSession httpSession;
 	private final KakaoMapsApi kakaoMapsApi;
 
@@ -36,7 +36,7 @@ public class ProfileService {
 			throw new RestApiException(ErrorCode.PROFILE_ALREADY_EXIST);
 		}
 
-		Member foundMember = userRepository.findById(userId)
+		Member foundMember = memberRepository.findById(userId)
 			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
 
 		KakaoApiResponse.Address latitudeAndLongitudeFromAddress = kakaoMapsApi.getLatitudeAndLongitudeFromAddress(
@@ -57,7 +57,10 @@ public class ProfileService {
 		profileRepository.save(newProfile);
 	}
 
-	public Point addLocation(Double longitude, Double latitude) {
+	/*
+	 * TODO: 리팩토링 및 분리하는거 고민하기
+	 * */
+	private Point addLocation(Double longitude, Double latitude) {
 		return new GeometryFactory().createPoint(new Coordinate(longitude, latitude));
 	}
 
@@ -76,20 +79,17 @@ public class ProfileService {
 		foundProfile.updateProfile(request);
 	}
 
-	public void setProfileAddress(Long memberId, String address) {
-		Profile foundProfile = profileRepository.findByMemberId(memberId)
+	@Transactional(readOnly = true)
+	public List<ProfileResponse> findProfilesNearBy(final Long memberId, final Long radius) {
+		final Profile foundProfile = profileRepository.findByMemberId(memberId)
 			.orElseThrow(() -> new RestApiException(ErrorCode.PROFILE_NOT_FOUND));
-		kakaoMapsApi.getLatitudeAndLongitudeFromAddress(address);
 
-	}
-
-	public List<ProfileResponse> findNearByProfiles(Long memberId) {
-		Profile foundProfile = profileRepository.findByMemberId(memberId)
-			.orElseThrow(() -> new RestApiException(ErrorCode.PROFILE_NOT_FOUND));
 		final Point location = foundProfile.getLocation();
 
-		List<Profile> nearbyProfiles = profileRepository.findNearbyProfiles(location, foundProfile.getId(), 1000);
+		final List<Profile> nearbyProfiles = profileRepository.findProfilesNearBy(location, foundProfile.getId(),
+			radius);
 		log.info("nearbyProfiles Size = {}", nearbyProfiles.size());
+
 		return nearbyProfiles.stream()
 			.map(ProfileResponse::new)
 			.collect(Collectors.toList());

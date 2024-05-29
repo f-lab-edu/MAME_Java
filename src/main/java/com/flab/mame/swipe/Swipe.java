@@ -25,7 +25,9 @@ public class Swipe {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
+	/*
+	 * TODO: ENTITY PROFILE로 변경하기
+	 * */
 	@ManyToOne
 	@JoinColumn(name = "swiper_member_id")
 	private Member swiper;
