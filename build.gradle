@@ -27,9 +27,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.slf4j:slf4j-api:2.0.6'
     implementation 'org.springframework.security:spring-security-crypto'
+    implementation 'org.postgresql:postgresql'
+    implementation 'org.hibernate:hibernate-core:6.4.4.Final'
+    implementation 'org.hibernate:hibernate-spatial:6.4.4.Final'
+    implementation 'org.locationtech.jts:jts-core'
+
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

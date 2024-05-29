@@ -9,7 +9,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import com.flab.mame.global.annotation.CurrentProfile;
 import com.flab.mame.global.exception.ErrorCode;
 import com.flab.mame.global.exception.RestApiException;
-import com.flab.mame.user.domain.UserSessionConst;
+import com.flab.mame.user.domain.MemberSessionConst;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -34,11 +34,11 @@ public class CurrentProfileArgumentResolver implements HandlerMethodArgumentReso
 			throw new RestApiException(ErrorCode.LOGIN_REQUIRED);
 		}
 
-		if (session.getAttribute(UserSessionConst.PROFILE_ID) == null) {
+		if (session.getAttribute(MemberSessionConst.PROFILE_ID) == null) {
 			throw new RestApiException(ErrorCode.PROFILE_INCOMPLETED);
 		}
 
-		Long profileId = (Long)session.getAttribute(UserSessionConst.PROFILE_ID);
+		Long profileId = (Long)session.getAttribute(MemberSessionConst.PROFILE_ID);
 		log.info("profileId = {}", profileId);
 		return profileId;
 	}

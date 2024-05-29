@@ -3,9 +3,11 @@ package com.flab.mame.profile.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.locationtech.jts.geom.Point;
+
 import com.flab.mame.profile.ProfileUpdateRequest;
 import com.flab.mame.profileimage.domain.ProfileImage;
-import com.flab.mame.user.domain.User;
+import com.flab.mame.user.domain.Member;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -36,7 +38,7 @@ public class Profile {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false, length = 10)
+	@Column(nullable = false, length = 30)
 	@NotBlank
 	private String nickname;
 
@@ -49,14 +51,17 @@ public class Profile {
 	@NotNull
 	private GenderType genderType;
 
-	@Column(nullable = false)
+	@Column(nullable = false, length = 500)
 	@NotBlank
 	private String introduction;
 
 	@OneToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+	@JoinColumn(name = "member_id")
+	private Member member;
 
+	@Column(columnDefinition = "geometry(Point, 4326)")
+	private Point location;
+	
 	@OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProfileImage> profileImages = new ArrayList<>();
 

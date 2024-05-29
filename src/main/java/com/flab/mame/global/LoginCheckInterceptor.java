@@ -5,7 +5,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.flab.mame.global.exception.ErrorCode;
 import com.flab.mame.global.exception.RestApiException;
-import com.flab.mame.user.domain.UserSessionConst;
+import com.flab.mame.user.domain.MemberSessionConst;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,7 +24,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 		log.info("Session {}", request.getSession().getId());
 		HttpSession session = request.getSession();
 
-		if (session == null || session.getAttribute(UserSessionConst.USER_ID) == null) {
+		if (session == null || session.getAttribute(MemberSessionConst.USER_ID) == null) {
 			throw new RestApiException(ErrorCode.LOGIN_REQUIRED);
 		}
 

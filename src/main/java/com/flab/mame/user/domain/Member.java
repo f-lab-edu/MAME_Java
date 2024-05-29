@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Member {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,8 +39,8 @@ public class User {
 	private String email;
 
 	@NotBlank
-	@Column(nullable = false, length = 20)
-	@Length(min = 12, max = 20, message = "비밀번호는 최소 12글자 이상, 최대 20글자 이하입니다.")
+	@Column(nullable = false, length = 30)
+	@Length(min = 12, max = 30, message = "비밀번호는 최소 12글자 이상, 최대 20글자 이하입니다.")
 	private String password;
 
 	@OneToMany(mappedBy = "swiper")
@@ -49,7 +49,7 @@ public class User {
 	@OneToMany(mappedBy = "swipee")
 	private List<Swipe> swipesReceived = new ArrayList<>();
 
-	@OneToMany(mappedBy = "user1")
+	@OneToMany(mappedBy = "member1")
 	private List<MatchedUser> matchedUserMatchesAsSwiper = new ArrayList<>();
 
 

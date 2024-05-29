@@ -32,7 +32,7 @@ public class ProfileImageService {
 	private final ProfileImageRepository profileImageRepository;
 
 	public void addProfileImage(final Long userId, final MultipartFile image) throws IOException {
-		final Profile foundProfile = profileRepository.findByUserId(userId)
+		final Profile foundProfile = profileRepository.findByMemberId(userId)
 			.orElseThrow(() -> new RestApiException(ErrorCode.PROFILE_NOT_FOUND));
 		/*
 		 * TODO : 추후 Util 만들기
@@ -68,7 +68,7 @@ public class ProfileImageService {
 		/*
 		 * TODO: Checked Exception handling needed
 		 * */
-		final Profile profile = profileRepository.findByUserId(userId)
+		final Profile profile = profileRepository.findByMemberId(userId)
 			.orElseThrow(() -> new RestApiException(ErrorCode.PROFILE_NOT_FOUND));
 
 		final ProfileImage foundProfileImage = profileImageRepository.findByIdAndProfileId(profileImageId,
@@ -79,7 +79,7 @@ public class ProfileImageService {
 	}
 
 	public void deleteProfileImage(final Long userId, final Long profileImageId) {
-		final Profile profile = profileRepository.findByUserId(userId)
+		final Profile profile = profileRepository.findByMemberId(userId)
 			.orElseThrow(() -> new RestApiException(ErrorCode.PROFILE_NOT_FOUND));
 
 		ProfileImage foundProfileImage = profileImageRepository.findByIdAndProfileId(profileImageId, profile.getId())

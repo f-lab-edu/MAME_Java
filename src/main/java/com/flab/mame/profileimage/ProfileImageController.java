@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.flab.mame.global.annotation.CurrentUser;
+import com.flab.mame.global.annotation.CurrentMember;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,21 +25,21 @@ public class ProfileImageController {
 	private final ProfileImageService photoService;
 
 	@PostMapping
-	public void addProfileImage(@CurrentUser final Long userId,
+	public void addProfileImage(@CurrentMember final Long userId,
 		@RequestParam(value = "image") final MultipartFile image) throws IOException {
 		log.info("addProfileImage with userId = {}", userId);
 		photoService.addProfileImage(userId, image);
 	}
 
 	@PatchMapping("/{profileImageId}")
-	public void changeProfileImage(@CurrentUser final Long userId,
+	public void changeProfileImage(@CurrentMember final Long userId,
 		@PathVariable final Long profileImageId,
 		@RequestParam("image") final MultipartFile image) throws IOException {
 		photoService.changeProfileImage(userId, profileImageId, image);
 	}
 
 	@DeleteMapping("/{profileImageId}")
-	public void deleteProfileImage(@CurrentUser final Long userId, @PathVariable final Long profileImageId) {
+	public void deleteProfileImage(@CurrentMember final Long userId, @PathVariable final Long profileImageId) {
 		photoService.deleteProfileImage(userId, profileImageId);
 	}
 }

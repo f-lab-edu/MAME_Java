@@ -5,8 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.flab.mame.global.exception.ErrorCode;
 import com.flab.mame.global.exception.RestApiException;
-import com.flab.mame.user.domain.User;
-import com.flab.mame.user.domain.UserRepository;
+import com.flab.mame.user.domain.Member;
+import com.flab.mame.user.domain.MemberRepository;
 import com.flab.mame.user.dto.UserSignupRequest;
 
 import lombok.RequiredArgsConstructor;
@@ -14,33 +14,33 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class UserService {
+public class MemberService {
 
-	private final UserRepository userRepository;
+	private final MemberRepository memberRepository;
 
 	public void signup(final UserSignupRequest request) {
 
-		if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+		if (memberRepository.findByEmail(request.getEmail()).isPresent()) {
 			throw new RestApiException(ErrorCode.EMAIL_ALREADY_USED);
 		}
 
-		final User newUser = User.builder()
+		final Member newMember = Member.builder()
 			.email(request.getEmail())
 			.password(request.getPassword())
 			.build();
 
-		userRepository.save(newUser);
+		memberRepository.save(newMember);
 
 	}
 
-	public User getUserById(final Long id) {
+	public Member getUserById(final Long id) {
 		/*
 		 * TODO: 유저 못찾을 시 예외처리
 		 * */
-		final User foundUser = userRepository.findById(id)
+		final Member foundMember = memberRepository.findById(id)
 			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
 
-		return foundUser;
+		return foundMember;
 	}
 
 	/*public void updateUser(final Long id, UserUpdateReqeust reqeust) {
@@ -57,9 +57,9 @@ public class UserService {
 		/*
 		 * TODO: 유저 못찾을 시 예외처리
 		 * */
-		final User foundUser = userRepository.findById(id)
+		final Member foundMember = memberRepository.findById(id)
 			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
-		userRepository.delete(foundUser);
+		memberRepository.delete(foundMember);
 
 	}
 }

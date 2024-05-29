@@ -6,10 +6,10 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.flab.mame.global.annotation.CurrentUser;
+import com.flab.mame.global.annotation.CurrentMember;
 import com.flab.mame.global.exception.ErrorCode;
 import com.flab.mame.global.exception.RestApiException;
-import com.flab.mame.user.domain.UserSessionConst;
+import com.flab.mame.user.domain.MemberSessionConst;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -20,7 +20,7 @@ public class CurrentUserArgumentResolver implements HandlerMethodArgumentResolve
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
-		return parameter.hasParameterAnnotation(CurrentUser.class);
+		return parameter.hasParameterAnnotation(CurrentMember.class);
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class CurrentUserArgumentResolver implements HandlerMethodArgumentResolve
 			throw new RestApiException(ErrorCode.LOGIN_REQUIRED);
 		}
 
-		Long userId = (Long)session.getAttribute(UserSessionConst.USER_ID);
+		Long userId = (Long)session.getAttribute(MemberSessionConst.USER_ID);
 
 		log.info("userId = {}", userId);
 		return userId;

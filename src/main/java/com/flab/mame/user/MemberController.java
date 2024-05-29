@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.flab.mame.global.annotation.CurrentUser;
-import com.flab.mame.user.domain.User;
+import com.flab.mame.global.annotation.CurrentMember;
+import com.flab.mame.user.domain.Member;
 import com.flab.mame.user.dto.UserSignupRequest;
 
 import jakarta.validation.Valid;
@@ -19,19 +19,19 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
-public class UserController {
+public class MemberController {
 
-	private final UserService userService;
+	private final MemberService memberService;
 
 	@PostMapping("/signup")
 	public void signup(@RequestBody @Valid final UserSignupRequest request) {
-		userService.signup(request);
+		memberService.signup(request);
 	}
 
 	@GetMapping
-	public User getUserById(@CurrentUser final Long id) {
+	public Member getUserById(@CurrentMember final Long id) {
 		log.info("userId = {}", id);
-		return userService.getUserById(id);
+		return memberService.getUserById(id);
 	}
 
 	/*@PatchMapping("/{id}")
@@ -40,9 +40,9 @@ public class UserController {
 	}
 */
 	@DeleteMapping
-	public void deleteUser(@CurrentUser final Long id) {
+	public void deleteUser(@CurrentMember final Long id) {
 		log.info("userId = {}", id);
-		userService.deleteUser(id);
+		memberService.deleteUser(id);
 	}
 
 }
