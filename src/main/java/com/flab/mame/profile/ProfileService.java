@@ -36,25 +36,32 @@ public class ProfileService {
 			throw new RestApiException(ErrorCode.PROFILE_ALREADY_EXIST);
 		}
 
-		Member foundMember = memberRepository.findById(userId)
-			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
+		final Member foundMember = memberRepository.findById(userId)
+			.orElseThrow(() -> new RestApiException(ErrorCode.MEMBER_NOT_FOUND));
 
-		KakaoApiResponse.Address latitudeAndLongitudeFromAddress = kakaoMapsApi.getLatitudeAndLongitudeFromAddress(
+		final KakaoApiResponse.Address latitudeAndLongitudeFromAddress = kakaoMapsApi.getLatitudeAndLongitudeFromAddress(
 			request.getAddress());
 
 		final Double latitude = latitudeAndLongitudeFromAddress.getLatitude();
 		final Double longitude = latitudeAndLongitudeFromAddress.getLongitude();
 
-		Profile newProfile = Profile.builder()
+		final Profile newProfile = Profile.builder()
 			.nickname(request.getNickname())
 			.age(request.getAge())
 			.genderType(request.getGenderType())
 			.introduction(request.getIntroduction())
-			.member(foundMember)
 			.location(addLocation(longitude, latitude))
+			.member(foundMember)
 			.build();
-
+		/*
+		 * TODO : 1:1 양방향은 수동으로 넣어줘야하는데 고민해보기
+		 *
+		 * */
+		foundMember.addProfile(newProfile);
+		log.info("foundMember.getProfile() = {}", foundMember.getProfile());
+		log.info("newProfile = {}", newProfile);
 		profileRepository.save(newProfile);
+
 	}
 
 	/*
