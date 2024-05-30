@@ -42,6 +42,11 @@ public class LoginService {
 		log.info("session Id = {}", httpSession.getId());
 		log.info("userId = {}", httpSession.getAttribute(SessionConst.USER_ID));
 
+		if (foundMember.getProfile() != null) {
+			httpSession.setAttribute(SessionConst.PROFILE_ID, foundMember.getProfile().getId());
+			log.info("profileId = {}", httpSession.getAttribute(SessionConst.PROFILE_ID));
+		}
+
 	}
 
 	public void logout() {

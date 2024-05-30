@@ -28,7 +28,7 @@ public class CurrentProfileArgumentResolver implements HandlerMethodArgumentReso
 		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
 
 		final HttpServletRequest request = (HttpServletRequest)webRequest.getNativeRequest();
-		HttpSession session = request.getSession(false);
+		final HttpSession session = request.getSession(false);
 
 		if (session == null) {
 			throw new RestApiException(ErrorCode.LOGIN_REQUIRED);
@@ -38,7 +38,7 @@ public class CurrentProfileArgumentResolver implements HandlerMethodArgumentReso
 			throw new RestApiException(ErrorCode.PROFILE_INCOMPLETED);
 		}
 
-		Long profileId = (Long)session.getAttribute(SessionConst.PROFILE_ID);
+		final Long profileId = (Long)session.getAttribute(SessionConst.PROFILE_ID);
 		log.info("profileId = {}", profileId);
 		return profileId;
 	}

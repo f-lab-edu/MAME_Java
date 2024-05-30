@@ -34,7 +34,7 @@ public class CurrentUserArgumentResolver implements HandlerMethodArgumentResolve
 			throw new RestApiException(ErrorCode.LOGIN_REQUIRED);
 		}
 
-		Long userId = (Long)session.getAttribute(SessionConst.USER_ID);
+		final Long userId = (Long)session.getAttribute(SessionConst.USER_ID);
 
 		log.info("userId = {}", userId);
 		return userId;
