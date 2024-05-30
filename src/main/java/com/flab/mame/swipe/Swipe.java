@@ -1,6 +1,6 @@
 package com.flab.mame.swipe;
 
-import com.flab.mame.user.domain.Member;
+import com.flab.mame.profile.domain.Profile;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -29,15 +29,15 @@ public class Swipe {
 	 * TODO: ENTITY PROFILE로 변경하기
 	 * */
 	@ManyToOne
-	@JoinColumn(name = "swiper_member_id")
-	private Member swiper;
+	@JoinColumn(name = "swiper_profile_id")
+	private Profile swiper;
 
 	@ManyToOne
-	@JoinColumn(name = "swipee_member_id")
-	private Member swipee;
+	@JoinColumn(name = "swipee_profile_id")
+	private Profile swipee;
 
 	@Enumerated(EnumType.STRING)
-	private SwipeType type;
+	private SwipeType swipeType;
 
 	/*
 	 * TODO : 매칭 유무 Enum 구현하기
