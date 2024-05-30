@@ -6,22 +6,24 @@ import org.springframework.transaction.annotation.Transactional;
 import com.flab.mame.global.annotation.CurrentMember;
 import com.flab.mame.global.exception.ErrorCode;
 import com.flab.mame.global.exception.RestApiException;
-import com.flab.mame.matcheduser.MatchedUser;
-import com.flab.mame.matcheduser.MatchedUserRepository;
+import com.flab.mame.matcheduser.Matching;
+import com.flab.mame.matcheduser.MatchingRepository;
 import com.flab.mame.user.domain.Member;
 import com.flab.mame.user.domain.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class SwipeService {
 
 	private final SwipeRepository swipeRepository;
 	private final MemberRepository memberRepository;
 
-	private final MatchedUserRepository matchedUserRepository;
+	private final MatchingRepository matchingRepository;
 
 	public void swipeUser(@CurrentMember final Long swiperId, final SwipeRequest request) {
 		/*
@@ -30,10 +32,14 @@ public class SwipeService {
 		 * */
 
 		Member swiper = memberRepository.findById(swiperId)
-			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
+			.orElseThrow(() -> new RestApiException(ErrorCode.MEMBER_NOT_FOUND));
 
 		Member swipee = memberRepository.findById(request.getSwipeeId())
-			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
+			.orElseThrow(() -> new RestApiException(ErrorCode.MEMBER_NOT_FOUND));
+
+		if (swipee.getId().equals(swiper.getId())) {
+			throw new RestApiException(ErrorCode.INVALID_SWIPE_REQUEST);
+		}
 
 		Swipe newSwipe = Swipe.builder()
 			.swiper(swiper)
@@ -47,21 +53,23 @@ public class SwipeService {
 			swipeRepository.findBySwiperAndSwipee(swipee, swiper)
 				.filter(swipe -> swipe.getType().equals(SwipeType.LIKE))
 				.ifPresent(swipe -> {
-					MatchedUser newMatchForUser1 = MatchedUser.builder()
+					Matching newMatchForUser1 = Matching.builder()
 						.member1(swiper)
 						.member2(swipee)
 						.build();
 
-					MatchedUser newMatchForUser2 = MatchedUser.builder()
+					Matching newMatchForUser2 = Matching.builder()
 						.member1(swipee)
 						.member2(swiper)
 						.build();
 
-					matchedUserRepository.save(newMatchForUser1);
-					matchedUserRepository.save(newMatchForUser2);
+					matchingRepository.save(newMatchForUser1);
+					matchingRepository.save(newMatchForUser2);
+
 				});
 
 		}
+
 	}
 }
 

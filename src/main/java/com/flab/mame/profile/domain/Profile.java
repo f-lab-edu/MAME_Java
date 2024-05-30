@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.locationtech.jts.geom.Point;
 
+import com.flab.mame.matcheduser.Matching;
 import com.flab.mame.profile.ProfileUpdateRequest;
 import com.flab.mame.profileimage.domain.ProfileImage;
+import com.flab.mame.swipe.Swipe;
 import com.flab.mame.user.domain.Member;
 
 import jakarta.persistence.CascadeType;
@@ -14,6 +16,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,6 +36,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Profile {
+
+	private static final int PROFILE_IMAGE_MAX_AMOUNT = 6;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,9 +66,21 @@ public class Profile {
 
 	@Column(columnDefinition = "geometry(Point, 4326)")
 	private Point location;
-	
+
 	@OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProfileImage> profileImages = new ArrayList<>();
+
+	@OneToMany(mappedBy = "profile1", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Matching> matchesInitiated;
+
+	@OneToMany(mappedBy = "profile2", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Matching> matchesReceived;
+
+	@OneToMany(mappedBy = "swiper", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Swipe> swipesMade;
+
+	@OneToMany(mappedBy = "swiped", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Swipe> swipesReceived;
 
 	public void updateProfile(final ProfileUpdateRequest request) {
 		this.nickname = request.getNickname();
