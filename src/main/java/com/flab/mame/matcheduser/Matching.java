@@ -1,6 +1,6 @@
 package com.flab.mame.matcheduser;
 
-import com.flab.mame.user.domain.Member;
+import com.flab.mame.profile.domain.Profile;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,10 +25,10 @@ public class Matching {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "member1_id")
-	private Member member1;
+	@JoinColumn(name = "profile1_id")
+	private Profile profile1;
 
 	@ManyToOne
-	@JoinColumn(name = "member2_id")
-	private Member member2;
+	@JoinColumn(name = "profile2_id")
+	private Profile profile2;
 }

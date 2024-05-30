@@ -28,6 +28,6 @@ public class MatchingController {
 
 	@DeleteMapping
 	public void deleteUserMatchByUser1Id(@CurrentMember final Long id) {
-		matchingService.deleteUserMatchByUser1Id(id);
+		// matchingService.deleteUserMatchByUser1Id(id);
 	}
 }

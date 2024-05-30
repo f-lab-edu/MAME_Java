@@ -69,7 +69,7 @@ public class MemberService {
 		 * TODO: 양방향 매핑, 리팩토링 고민하기
 		 *
 		 * */
-		Profile foundProfile = profileRepository.findByMemberId(foundMember.getId()).orElseThrow(
+		Profile foundProfile = profileRepository.findById(foundMember.getId()).orElseThrow(
 			() -> new RestApiException(ErrorCode.PROFILE_NOT_FOUND)
 		);
 
