@@ -27,6 +27,7 @@ public enum ErrorCode {
 	// Swipe
 	SWIPE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 SwipeeId"),
 	INVALID_SWIPE_REQUEST(HttpStatus.CONFLICT, "본인을 SWIPE할수 없습니다"),
+	SWIPE_ALREADY_EXIST(HttpStatus.CONFLICT, "이미 Swipe한 Profile"),
 
 	// UserMatch
 	USER_MATCH_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 User Match");

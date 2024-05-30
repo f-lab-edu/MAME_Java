@@ -79,7 +79,7 @@ public class Profile {
 	@OneToMany(mappedBy = "swiper", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Swipe> swipesMade;
 
-	@OneToMany(mappedBy = "swiped", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "swipee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Swipe> swipesReceived;
 
 	public void updateProfile(final ProfileUpdateRequest request) {

@@ -34,29 +34,33 @@ public class SwipeService {
 			throw new RestApiException(ErrorCode.INVALID_SWIPE_REQUEST);
 		}
 
-		final Profile swiperProfile = profileRepository.findById(swiperId).orElseThrow(
+		final Profile swiper = profileRepository.findById(swiperId).orElseThrow(
 			() -> new RestApiException(ErrorCode.PROFILE_NOT_FOUND)
 		);
 
-		final Profile swipeeProfile = profileRepository.findById(request.getSwipeeId()).orElseThrow(
+		final Profile swipee = profileRepository.findById(request.getSwipeeId()).orElseThrow(
 			() -> new RestApiException(ErrorCode.PROFILE_NOT_FOUND)
 		);
+
+		if (swipeRepository.findBySwiperAndSwipee(swiper, swipee).isPresent()) {
+			throw new RestApiException(ErrorCode.SWIPE_ALREADY_EXIST);
+		}
 
 		Swipe newSwipe = Swipe.builder()
-			.swiper(swiperProfile)
-			.swipee(swipeeProfile)
+			.swiper(swiper)
+			.swipee(swipee)
 			.swipeType(request.getSwipeType())
 			.build();
 
 		swipeRepository.save(newSwipe);
 
 		if (request.getSwipeType().equals(SwipeType.LIKE)) {
-			swipeRepository.findBySwiperAndSwipee(swipeeProfile, swiperProfile)
+			swipeRepository.findBySwiperAndSwipee(swipee, swiper)
 				.filter(swipe -> swipe.getSwipeType().equals(SwipeType.LIKE))
 				.ifPresent(swipe -> {
 					Matching newMatching = Matching.builder()
-						.profile1(swiperProfile)
-						.profile2(swipeeProfile)
+						.profile1(swiper)
+						.profile2(swipee)
 						.build();
 					matchingRepository.save(newMatching);
 				});

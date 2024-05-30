@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flab.mame.global.annotation.CurrentMember;
+import com.flab.mame.global.annotation.CurrentProfile;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,19 +37,19 @@ public class ProfileController {
 
 	// radius 1 = 1m, 100 = 100m
 	@GetMapping
-	public List<ProfileResponse> findProfilesNearBy(@CurrentMember final Long memberId,
+	public List<ProfileResponse> findProfilesNearBy(@CurrentProfile final Long profileId,
 		@RequestParam(defaultValue = "10000", required = false) final Long radius) {
-		log.info("memberId = {}", memberId);
+		log.info("profileId = {}", profileId);
 		log.info("radius = {}", radius);
-		return profileService.findProfilesNearBy(memberId, radius);
+		return profileService.findProfilesNearBy(profileId, radius);
 	}
 
 	@PutMapping
-	public void updateProfile(@CurrentMember final Long userId,
+	public void updateProfile(@CurrentProfile final Long profileId,
 		@RequestBody @Valid final ProfileUpdateRequest request) {
-		log.info("updateProfile for user: {}", userId);
+		log.info("updateProfile for user: {}", profileId);
 
-		profileService.updateProfile(userId, request);
+		profileService.updateProfile(profileId, request);
 
 	}
 
