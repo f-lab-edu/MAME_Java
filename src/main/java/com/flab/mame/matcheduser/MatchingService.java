@@ -18,17 +18,17 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @Slf4j
 @RequiredArgsConstructor
-public class MatchedUserService {
+public class MatchingService {
 
-	private final MatchedUserRepository matchedUserRepository;
+	private final MatchingRepository matchingRepository;
 
 	private final MemberRepository memberRepository;
 
-	public List<MatchedUserResponse> getAllUserMatchesByUser1Id(final Long id) {
+	public List<MatchingResponse> getAllUserMatchesByUser1Id(final Long id) {
 		final Member foundMember = memberRepository.findById(id)
-			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
-		final List<MatchedUserResponse> matches = matchedUserRepository.findAllByMember1(foundMember).stream()
-			.map(MatchedUserResponse::new)
+			.orElseThrow(() -> new RestApiException(ErrorCode.MEMBER_NOT_FOUND));
+		final List<MatchingResponse> matches = matchingRepository.findAllByMember1(foundMember).stream()
+			.map(MatchingResponse::new)
 			.collect(Collectors.toList());
 
 		log.info("matches size : {}", matches.size());
@@ -37,16 +37,16 @@ public class MatchedUserService {
 
 	public void deleteUserMatchByUser1Id(Long id) {
 		final Member foundMember1 = memberRepository.findById(id)
-			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
-		final MatchedUser foundUserMatchForMatchedUser1 = matchedUserRepository.findByMember1(foundMember1)
+			.orElseThrow(() -> new RestApiException(ErrorCode.MEMBER_NOT_FOUND));
+		final Matching foundUserMatchForMatching1 = matchingRepository.findByMember1(foundMember1)
 			.orElseThrow(() -> new RestApiException(ErrorCode.USER_MATCH_NOT_FOUND));
 
-		final Member member2 = foundUserMatchForMatchedUser1.getMember2();
-		MatchedUser foundUserMatchForMatchedUser2 = matchedUserRepository.findByMember1(member2)
+		final Member member2 = foundUserMatchForMatching1.getMember2();
+		Matching foundUserMatchForMatching2 = matchingRepository.findByMember1(member2)
 			.orElseThrow(() -> new RestApiException(ErrorCode.USER_MATCH_NOT_FOUND));
 
-		matchedUserRepository.delete(foundUserMatchForMatchedUser1);
-		matchedUserRepository.delete(foundUserMatchForMatchedUser2);
+		matchingRepository.delete(foundUserMatchForMatching1);
+		matchingRepository.delete(foundUserMatchForMatching2);
 
 	}
 }

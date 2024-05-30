@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MatchedUser {
+public class Matching {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

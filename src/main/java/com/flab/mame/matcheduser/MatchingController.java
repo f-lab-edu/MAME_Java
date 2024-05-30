@@ -16,18 +16,18 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user-matches")
-public class MatchedUserController {
+public class MatchingController {
 
-	private final MatchedUserService matchedUserService;
+	private final MatchingService matchingService;
 
 	@GetMapping
-	public List<MatchedUserResponse> getAllUserMatchesByUser1Id(@CurrentMember final Long id) {
+	public List<MatchingResponse> getAllUserMatchesByUser1Id(@CurrentMember final Long id) {
 		log.info("User1Id = {}", id);
-		return matchedUserService.getAllUserMatchesByUser1Id(id);
+		return matchingService.getAllUserMatchesByUser1Id(id);
 	}
 
 	@DeleteMapping
 	public void deleteUserMatchByUser1Id(@CurrentMember final Long id) {
-		matchedUserService.deleteUserMatchByUser1Id(id);
+		matchingService.deleteUserMatchByUser1Id(id);
 	}
 }

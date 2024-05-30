@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.flab.mame.user.domain.Member;
 
-public interface MatchedUserRepository extends JpaRepository<MatchedUser, Long> {
+public interface MatchingRepository extends JpaRepository<Matching, Long> {
 
-	List<MatchedUser> findAllByMember1(Member member1);
+	List<Matching> findAllByMember1(Member member1);
 
-	Optional<MatchedUser> findByMember1(Member foundMember);
+	Optional<Matching> findByMember1(Member foundMember);
 }
