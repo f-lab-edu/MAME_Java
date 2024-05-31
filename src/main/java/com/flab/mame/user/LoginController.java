@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.flab.mame.user.dto.UserLoginRequest;
+import com.flab.mame.user.dto.MemberLoginRequest;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class LoginController {
 	private final LoginService loginService;
 
 	@PostMapping("/login")
-	public void login(@RequestBody @Valid final UserLoginRequest reqeust) {
+	public void login(@RequestBody @Valid final MemberLoginRequest reqeust) {
 		log.info("request={}", reqeust);
 		loginService.login(reqeust);
 	}

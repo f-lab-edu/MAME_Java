@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.flab.mame.global.annotation.CurrentMember;
+import com.flab.mame.global.annotation.CurrentProfile;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +20,12 @@ public class SwipeController {
 	private final SwipeService swipeService;
 
 	@PostMapping
-	public void swipeUser(@CurrentMember final Long swiperId, @RequestBody @Valid final SwipeRequest request) {
+	public void swipeUser(@CurrentProfile final Long swiperProfileId, @RequestBody @Valid final SwipeRequest request) {
 		/*
 		 * TODO : 프로필이 완성되어야 스와이프 가능하도록?
 		 * */
-		log.info("swiperId = {}", swiperId);
+		log.info("swiperId = {}", swiperProfileId);
 		log.info("swipeeId = {}", request.getSwipeeId());
-		swipeService.swipeUser(swiperId, request);
+		swipeService.swipeProfile(swiperProfileId, request);
 	}
 }

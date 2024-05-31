@@ -6,10 +6,10 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import com.flab.mame.global.SessionConst;
 import com.flab.mame.global.annotation.CurrentProfile;
 import com.flab.mame.global.exception.ErrorCode;
 import com.flab.mame.global.exception.RestApiException;
-import com.flab.mame.user.domain.MemberSessionConst;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -28,17 +28,17 @@ public class CurrentProfileArgumentResolver implements HandlerMethodArgumentReso
 		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
 
 		final HttpServletRequest request = (HttpServletRequest)webRequest.getNativeRequest();
-		HttpSession session = request.getSession(false);
+		final HttpSession session = request.getSession(false);
 
 		if (session == null) {
 			throw new RestApiException(ErrorCode.LOGIN_REQUIRED);
 		}
 
-		if (session.getAttribute(MemberSessionConst.PROFILE_ID) == null) {
+		if (session.getAttribute(SessionConst.PROFILE_ID) == null) {
 			throw new RestApiException(ErrorCode.PROFILE_INCOMPLETED);
 		}
 
-		Long profileId = (Long)session.getAttribute(MemberSessionConst.PROFILE_ID);
+		final Long profileId = (Long)session.getAttribute(SessionConst.PROFILE_ID);
 		log.info("profileId = {}", profileId);
 		return profileId;
 	}

@@ -1,19 +1,16 @@
 package com.flab.mame.user.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hibernate.validator.constraints.Length;
 
-import com.flab.mame.matcheduser.MatchedUser;
-import com.flab.mame.swipe.Swipe;
+import com.flab.mame.profile.domain.Profile;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -39,25 +36,18 @@ public class Member {
 	private String email;
 
 	@NotBlank
-	@Column(nullable = false, length = 30)
-	@Length(min = 12, max = 30, message = "비밀번호는 최소 12글자 이상, 최대 20글자 이하입니다.")
+	@Column(nullable = false, length = 20)
+	@Length(min = 12, max = 20, message = "비밀번호는 최소 12글자 이상, 최대 20글자 이하입니다.")
 	private String password;
 
-	@OneToMany(mappedBy = "swiper")
-	private List<Swipe> swipesSent = new ArrayList<>();
+	@OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Profile profile;
 
-	@OneToMany(mappedBy = "swipee")
-	private List<Swipe> swipesReceived = new ArrayList<>();
+	public void changePassword(final String newPassword) {
+		this.password = newPassword;
+	}
 
-	@OneToMany(mappedBy = "member1")
-	private List<MatchedUser> matchedUserMatchesAsSwiper = new ArrayList<>();
-
-
-
-
-	/*
-	 * TODO: MATCH 연관관계
-	 *
-	 * */
-
+	public void addProfile(Profile profile) {
+		this.profile = profile;
+	}
 }

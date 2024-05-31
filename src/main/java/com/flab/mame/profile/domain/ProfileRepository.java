@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
-	Optional<Profile> findByMemberId(Long memberId);
+	Optional<Profile> findById(Long memberId);
 
 	/*
 	 *

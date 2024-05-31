@@ -3,65 +3,70 @@ package com.flab.mame.swipe;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.flab.mame.global.annotation.CurrentMember;
 import com.flab.mame.global.exception.ErrorCode;
 import com.flab.mame.global.exception.RestApiException;
-import com.flab.mame.matcheduser.MatchedUser;
-import com.flab.mame.matcheduser.MatchedUserRepository;
-import com.flab.mame.user.domain.Member;
-import com.flab.mame.user.domain.MemberRepository;
+import com.flab.mame.matcheduser.Matching;
+import com.flab.mame.matcheduser.MatchingRepository;
+import com.flab.mame.profile.domain.Profile;
+import com.flab.mame.profile.domain.ProfileRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class SwipeService {
 
 	private final SwipeRepository swipeRepository;
-	private final MemberRepository memberRepository;
 
-	private final MatchedUserRepository matchedUserRepository;
+	private final ProfileRepository profileRepository;
 
-	public void swipeUser(@CurrentMember final Long swiperId, final SwipeRequest request) {
+	private final MatchingRepository matchingRepository;
+
+	public void swipeProfile(final Long swiperId, final SwipeRequest request) {
 		/*
 		 * TODO: 프로필 미완성시 예외처리
 		 *
 		 * */
+		if (swiperId.equals(request.getSwipeeId())) {
+			throw new RestApiException(ErrorCode.INVALID_SWIPE_REQUEST);
+		}
 
-		Member swiper = memberRepository.findById(swiperId)
-			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
+		final Profile swiper = profileRepository.findById(swiperId).orElseThrow(
+			() -> new RestApiException(ErrorCode.PROFILE_NOT_FOUND)
+		);
 
-		Member swipee = memberRepository.findById(request.getSwipeeId())
-			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
+		final Profile swipee = profileRepository.findById(request.getSwipeeId()).orElseThrow(
+			() -> new RestApiException(ErrorCode.PROFILE_NOT_FOUND)
+		);
+
+		if (swipeRepository.findBySwiperAndSwipee(swiper, swipee).isPresent()) {
+			throw new RestApiException(ErrorCode.SWIPE_ALREADY_EXIST);
+		}
 
 		Swipe newSwipe = Swipe.builder()
 			.swiper(swiper)
 			.swipee(swipee)
-			.type(request.getSwipeType())
+			.swipeType(request.getSwipeType())
 			.build();
 
 		swipeRepository.save(newSwipe);
 
-		if (newSwipe.getType().equals(SwipeType.LIKE)) {
+		if (request.getSwipeType().equals(SwipeType.LIKE)) {
 			swipeRepository.findBySwiperAndSwipee(swipee, swiper)
-				.filter(swipe -> swipe.getType().equals(SwipeType.LIKE))
+				.filter(swipe -> swipe.getSwipeType().equals(SwipeType.LIKE))
 				.ifPresent(swipe -> {
-					MatchedUser newMatchForUser1 = MatchedUser.builder()
-						.member1(swiper)
-						.member2(swipee)
+					Matching newMatching = Matching.builder()
+						.profile1(swiper)
+						.profile2(swipee)
 						.build();
-
-					MatchedUser newMatchForUser2 = MatchedUser.builder()
-						.member1(swipee)
-						.member2(swiper)
-						.build();
-
-					matchedUserRepository.save(newMatchForUser1);
-					matchedUserRepository.save(newMatchForUser2);
+					matchingRepository.save(newMatching);
 				});
 
 		}
+
 	}
 }
 

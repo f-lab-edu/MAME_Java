@@ -3,12 +3,12 @@ package com.flab.mame.user;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.flab.mame.global.SessionConst;
 import com.flab.mame.global.exception.ErrorCode;
 import com.flab.mame.global.exception.RestApiException;
 import com.flab.mame.user.domain.Member;
 import com.flab.mame.user.domain.MemberRepository;
-import com.flab.mame.user.domain.MemberSessionConst;
-import com.flab.mame.user.dto.UserLoginRequest;
+import com.flab.mame.user.dto.MemberLoginRequest;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +24,12 @@ public class LoginService {
 
 	private final PasswordEncoder passwordEncoder;
 
-	public void login(final UserLoginRequest reqeust) {
+	public void login(final MemberLoginRequest reqeust) {
 		/*
 		 * TODO: 유저 못찾을 경우, 비밀번호 틀릴 경우, 비밀번호 검증
 		 * */
 		final Member foundMember = memberRepository.findByEmail(reqeust.getEmail())
-			.orElseThrow(() -> new RestApiException(ErrorCode.USER_NOT_FOUND));
+			.orElseThrow(() -> new RestApiException(ErrorCode.MEMBER_NOT_FOUND));
 		/*
 		 * TODO: 비밀번호 암호화 및 매칭
 		 * */
@@ -37,14 +37,20 @@ public class LoginService {
 			throw new RestApiException(ErrorCode.INVALID_LOGIN_REQUEST);
 		}
 
-		httpSession.setAttribute(MemberSessionConst.USER_ID, foundMember.getId());
+		httpSession.setAttribute(SessionConst.USER_ID, foundMember.getId());
 
 		log.info("session Id = {}", httpSession.getId());
-		log.info("userId = {}", httpSession.getAttribute(MemberSessionConst.USER_ID));
+		log.info("userId = {}", httpSession.getAttribute(SessionConst.USER_ID));
+
+		if (foundMember.getProfile() != null) {
+			httpSession.setAttribute(SessionConst.PROFILE_ID, foundMember.getProfile().getId());
+			log.info("profileId = {}", httpSession.getAttribute(SessionConst.PROFILE_ID));
+		}
 
 	}
 
 	public void logout() {
 		httpSession.invalidate();
+		log.info("userId = {}", httpSession.getAttribute(SessionConst.USER_ID));
 	}
 }

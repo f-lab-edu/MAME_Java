@@ -4,8 +4,8 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.flab.mame.user.domain.Member;
+import com.flab.mame.profile.domain.Profile;
 
 public interface SwipeRepository extends JpaRepository<Swipe, Long> {
-	Optional<Swipe> findBySwiperAndSwipee(Member swipee, Member swiper);
+	Optional<Swipe> findBySwiperAndSwipee(Profile swiper, Profile swipee);
 }
